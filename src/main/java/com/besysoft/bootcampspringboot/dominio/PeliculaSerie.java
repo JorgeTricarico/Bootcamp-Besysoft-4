@@ -37,7 +37,7 @@ public class PeliculaSerie implements Serializable {
     @JoinColumn(name = "GENERO_ID", nullable = false)
     private Genero genero;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "PERSONAJES_PELICULAS_SERIES",

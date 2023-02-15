@@ -6,6 +6,7 @@ import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPerson
 import com.besysoft.bootcampspringboot.services.interfaces.IPersonajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ import java.util.Optional;
 
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.*;
 
-@Service
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
+@Service
 public class PersonajeServicioImpl  implements IPersonajeService {
 
     @Autowired

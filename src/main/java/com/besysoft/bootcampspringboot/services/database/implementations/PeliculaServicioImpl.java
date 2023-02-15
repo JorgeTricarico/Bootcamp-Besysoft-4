@@ -5,6 +5,7 @@ import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPelicu
 import com.besysoft.bootcampspringboot.services.interfaces.IPeliculaSerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,9 @@ import static com.besysoft.bootcampspringboot.utilidades.Fechas.formatear;
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.badResquest;
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.notFound;
 
-@Service
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
+@Service
+
 public class PeliculaServicioImpl implements IPeliculaSerieService {
 
     @Autowired

@@ -15,9 +15,8 @@ import java.util.List;
 
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.*;
 
-@Service
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
-//@Primary
+@Service
 public class GeneroServiceImpl implements IGeneroService {
 
     @Autowired
@@ -36,7 +35,7 @@ public class GeneroServiceImpl implements IGeneroService {
         Boolean existeGenero = generoRepository.existsGeneroByNombreIgnoreCase(genero.getNombre());
 
         if (existeGenero) {
-            return badResquest("El nombre de genero '%s' ingresado ya existe", genero.getNombre());
+            return badResquest("El nombre de genero '%s' ya existe", genero.getNombre());
         }
 
         if (genero.getNombre().isBlank()) {
