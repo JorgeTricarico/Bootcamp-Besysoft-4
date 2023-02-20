@@ -53,7 +53,7 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
 
 
         if (OPeliculasSeries.isEmpty()) {
-            //return DatoDummyn.notFound("El titulo o genero %s no fue encontrado",titulo);
+
             List<PeliculaSerie> peliculasPorGenero = peliculaRepository.findAll().stream()
                     .filter(peliculaSerie ->  peliculaSerie.getGenero().getNombre().equalsIgnoreCase(tituloOGenero))
                     .collect(Collectors.toList());

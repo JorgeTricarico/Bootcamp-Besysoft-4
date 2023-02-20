@@ -69,7 +69,7 @@ public class GeneroServiceImpl implements IGeneroService {
 
             return new ResponseEntity(genero, HttpStatus.OK);
         }else{
-            return notFound("El id %s ingresado no existe", id.toString());
+            return notFound("El id %s no existe", id.toString());
         }
     }
 }
