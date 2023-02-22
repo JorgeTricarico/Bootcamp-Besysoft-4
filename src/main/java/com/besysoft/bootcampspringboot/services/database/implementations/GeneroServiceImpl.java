@@ -3,17 +3,12 @@ package com.besysoft.bootcampspringboot.services.database.implementations;
 import com.besysoft.bootcampspringboot.dominio.Genero;
 import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IGeneroRepository;
 import com.besysoft.bootcampspringboot.services.interfaces.IGeneroService;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.*;
 
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 @Service
@@ -51,16 +46,16 @@ public class GeneroServiceImpl implements IGeneroService {
 
     @Override
     @Transactional(readOnly = false)
-    public ResponseEntity actualizarGeneroPorId(Long id, Genero generoAct) {
+    public Genero actualizarGeneroPorId(Long id, Genero generoAct) {
 
         Boolean existeGenero = generoRepository.existsGeneroById(id);
 
         if (existeGenero) {
             Genero genero  = generoRepository.findById(id).get();
             genero.setNombre(generoAct.getNombre());
-            return new ResponseEntity(genero, HttpStatus.OK);
+            return genero;
         }else{
-            throw new NullPointerException();
+            throw new NullPointerException("No exise ningun genero en la base de datos.");
         }
     }
 }

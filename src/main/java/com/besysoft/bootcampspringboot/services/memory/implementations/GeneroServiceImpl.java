@@ -47,14 +47,14 @@ public class GeneroServiceImpl implements IGeneroService {
     }
 
     @Override
-    public ResponseEntity actualizarGeneroPorId(Long id, Genero generoAct) {
+    public Genero actualizarGeneroPorId(Long id, Genero generoAct) {
         Optional<Genero> optionalGenero = generoRepository.buscarGeneroPorId(id);
 
         if (optionalGenero.isPresent()) {
             Genero genero = optionalGenero.get();
 
             if (generoAct.getNombre().isBlank()) {
-                return badResquest("El nombre no puede ser nulo o estar vacio");
+                throw new IllegalArgumentException("El nombre no puede ser nulo o estar vacio");
             }
             /*if (generoAct.getPeliculasSeries() == null || generoAct.getPeliculaSerie().size()<1){
                 return badResquest("Las peliculas sociadas no pueden estar vacias o ser nulas");
@@ -63,9 +63,9 @@ public class GeneroServiceImpl implements IGeneroService {
             genero.setNombre(generoAct.getNombre());
             /*genero.setPeliculaSerie(generoAct.getPeliculaSerie());*/
 
-            return new ResponseEntity(genero, headers(), HttpStatus.OK);
+            return genero;
         }else{
-            return badResquest("El id %s ingresado no existe", id);
+            throw new IllegalArgumentException("El id ingresado no existe");
         }
     }
 }

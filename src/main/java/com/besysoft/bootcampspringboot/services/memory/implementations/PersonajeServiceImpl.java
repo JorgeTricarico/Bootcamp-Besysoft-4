@@ -27,14 +27,12 @@ public class PersonajeServiceImpl implements IPersonajeService {
     IPersonajeRepository personajeRepository;
 
     @Override
-    @Transactional(readOnly = true)
     public List<Personaje> obtenerTodosLosPersonajes() {
 
         return personajeRepository.obtenerTodosLosPersonajes();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Personaje> buscarPorEdadONombre(String dato) {
         if (dato == null || dato.isBlank()) {
             throw new IllegalArgumentException("El dato ingresado no puede ser nulo o estar vacio");
@@ -52,7 +50,6 @@ public class PersonajeServiceImpl implements IPersonajeService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Personaje> buscarPersonajePorNombre(String nombre) {
         Boolean sonSoloLetras = nombre.matches("^[a-zA-Z ]+$");
 
@@ -71,7 +68,6 @@ public class PersonajeServiceImpl implements IPersonajeService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Personaje> buscarPersonajesPorEdad(Integer edad) {
         Optional<Personaje> oPersonaje= personajeRepository.buscarPersonajesPorEdad(edad);
 
@@ -85,7 +81,6 @@ public class PersonajeServiceImpl implements IPersonajeService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Personaje> buscarPersonajePorRangoDeEdad(Integer desde, Integer hasta) {
         if (desde == null || hasta == null){
             throw new IllegalArgumentException("La edad no pueden ser nulas");
@@ -107,7 +102,6 @@ public class PersonajeServiceImpl implements IPersonajeService {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public Personaje agregarNuevoPersonaje(Personaje personaje) {
         Optional<Personaje> optionalPersonaje = personajeRepository.obtenerTodosLosPersonajes().stream().filter(p -> p.getNombre().equalsIgnoreCase(personaje.getNombre())).findAny();
 

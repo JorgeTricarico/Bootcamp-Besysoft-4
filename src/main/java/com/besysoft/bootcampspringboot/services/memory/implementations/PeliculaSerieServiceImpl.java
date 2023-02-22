@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.zip.DataFormatException;
 
 import static com.besysoft.bootcampspringboot.utilidades.Fechas.formatear;
-import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.*;
 
 @Service
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "memory")
@@ -27,9 +26,9 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
     IPeliculaSerieRepository peliculaSerieRepository;
 
     @Override
-    public ResponseEntity<?> obtenerTodasLasPeliculas() {
+    public List<PeliculaSerie> obtenerTodasLasPeliculas() {
         List<PeliculaSerie> peliculas = peliculaSerieRepository.obtenerTodasLasPeliculas();
-        return new ResponseEntity<>(peliculas, HttpStatus.OK);
+        return peliculas;
     }
 
     @Override

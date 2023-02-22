@@ -1,14 +1,13 @@
 package com.besysoft.bootcampspringboot.services.interfaces;
 
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.zip.DataFormatException;
 
 public interface IPeliculaSerieService {
 
-    ResponseEntity<?> obtenerTodasLasPeliculas();
+    List<PeliculaSerie> obtenerTodasLasPeliculas();
 
     List<PeliculaSerie> buscarPeliculaPorTituloOGenero(String tituloOGenero);
 

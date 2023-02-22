@@ -30,9 +30,12 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
     IPeliculaSerieRepository peliculaRepository;
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> obtenerTodasLasPeliculas() {
+    public List<PeliculaSerie> obtenerTodasLasPeliculas() {
         List<PeliculaSerie> peliculas = peliculaRepository.findAll();
-        return new ResponseEntity(peliculas, HttpStatus.OK);
+        if(peliculas.isEmpty()){
+            throw new NullPointerException("No hay peliculas en la base de datos.");
+        }
+        return peliculas;
     }
 
     @Override

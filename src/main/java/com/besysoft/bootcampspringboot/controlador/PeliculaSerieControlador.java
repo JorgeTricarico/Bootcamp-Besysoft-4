@@ -24,7 +24,13 @@ public class PeliculaSerieControlador {
 
     @GetMapping
     public ResponseEntity<?> mostrarTodasLasPeliculas() {
-        return peliculaService.obtenerTodasLasPeliculas();
+        try {
+            return ok(peliculaService.obtenerTodasLasPeliculas());
+        }catch (NullPointerException e){
+            return notFound(e.getMessage());
+        }catch (RuntimeException e){
+            return internalServerError(e.getMessage());
+        }
     }
 
     @GetMapping("/{tituloOGenero}")
