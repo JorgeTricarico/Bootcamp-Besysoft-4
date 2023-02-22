@@ -10,9 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface IPeliculaSerieRepository extends JpaRepository<PeliculaSerie,Long> {
-
     Optional<PeliculaSerie> findByTituloIgnoreCase(String titulo);
     List<PeliculaSerie> findAllByFechaDeCreacionBetween(LocalDate desde, LocalDate hasta);
     List<PeliculaSerie> findAllByCalificacionBetween(Integer start, Integer end);
-    boolean existsByTitulo(String titulo);
+    Boolean existsByTitulo(String titulo);
 }

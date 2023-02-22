@@ -10,7 +10,6 @@ public interface IGeneroService {
 
     List<Genero> obtenerTodosLosGeneros();
     Genero agregarNuevoGenero(Genero genero);
-
     Genero actualizarGeneroPorId(Long id, Genero generoAct);
 
 
