@@ -9,41 +9,65 @@ import java.util.Map;
 
 public class ResponseHttp {
 
-    public static ResponseEntity<?> badResquest(String mensaje, Object... argumentoFormat) {
+    public static ResponseEntity<?> ok(Object object) {
+        Map<String, Object> mensajeBody = new HashMap<>();
+        mensajeBody.put("success", Boolean.TRUE);
+        mensajeBody.put("object", object);
+        return ResponseEntity.ok().body(mensajeBody);
+    }
+    public static ResponseEntity<?> created(Object object) {
+        Map<String, Object> mensajeBody = new HashMap<>();
+        mensajeBody.put("success", Boolean.TRUE);
+        mensajeBody.put("object", object);
+        return new ResponseEntity<>(mensajeBody, HttpStatus.CREATED);
+    }
+    public static ResponseEntity<?> badResquest(String mensaje, Object argumentoFormat) {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", String.format(mensaje, argumentoFormat));
         return ResponseEntity.badRequest().body(mensajeBody);
-    } //Utilidades respuesta
+    }
 
     public static ResponseEntity<?> badResquest(String mensaje) {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", mensaje);
         return ResponseEntity.badRequest().body(mensajeBody);
-    } //Utilidades respuesta
+    }
 
     public static ResponseEntity<?> notFound(String mensaje) {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", mensaje);
-        return new ResponseEntity<>(mensajeBody, headers(), HttpStatus.NOT_FOUND);
-    } //Utilidades respuesta
+        return new ResponseEntity<>(mensajeBody, HttpStatus.NOT_FOUND);
+    }
 
-    public static ResponseEntity<?> notFound(String mensaje, Object... argumentoFormat) {
+    public static ResponseEntity<?> notFound(String mensaje, Object argumentoFormat) {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", String.format(mensaje, argumentoFormat));
-        return new ResponseEntity<>(mensajeBody, headers(), HttpStatus.NOT_FOUND);
-    } //Utilidades respuesta
+        return new ResponseEntity<>(mensajeBody, HttpStatus.NOT_FOUND);
+    }
 
-    public static ResponseEntity<?> notFound(Object objeto) {
-        return new ResponseEntity<>(objeto, headers(), HttpStatus.NOT_FOUND);
-    }//Utilidades respuesta
+    public static ResponseEntity<?> notFound(Object object) {
+        Map<String, Object> mensajeBody = new HashMap<>();
+        mensajeBody.put("success", Boolean.TRUE);
+        mensajeBody.put("object", object);
+        return new ResponseEntity<>(mensajeBody, HttpStatus.NOT_FOUND);
+    }
+
+    public static ResponseEntity<?> internalServerError(String mensaje) {
+        Map<String, Object> mensajeBody = new HashMap<>();
+        mensajeBody.put("success", Boolean.FALSE);
+        mensajeBody.put("mensaje", mensaje);
+        return ResponseEntity.internalServerError().headers(headers()).body(mensajeBody);
+    }
+
+
 
     public static HttpHeaders headers() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("app-info", "contacto@bootcamp.com");
         return headers;
-    } //Utilidades respuesta
+    }
 }

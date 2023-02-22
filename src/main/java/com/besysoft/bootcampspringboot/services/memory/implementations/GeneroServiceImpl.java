@@ -23,16 +23,13 @@ public class GeneroServiceImpl implements IGeneroService {
     IGeneroRepository generoRepository;
 
     @Override
-    public ResponseEntity<?> agregarNuevoGenero(Genero genero) {
+    public Genero agregarNuevoGenero(Genero genero) {
         Optional<Genero> optinalGenero = generoRepository.obtenerTodosLosGeneros()
                 .stream()
                 .filter(p -> p.getNombre().equalsIgnoreCase(genero.getNombre())).findAny();
 
         if (optinalGenero.isPresent()) {
-            return badResquest("El nombre de genero '%s' ingresado ya existe", genero.getNombre());
-        }
-        if (genero.getNombre().isBlank()) {
-            return badResquest("El nombre de genero no puede ser nulo");
+            throw new RuntimeException("El nombre de genero '" + genero.getNombre() +"' ya existe.");
         }
 
         Long cantidadDeGeneros = Long.valueOf(generoRepository.obtenerTodosLosGeneros().size());
@@ -40,13 +37,13 @@ public class GeneroServiceImpl implements IGeneroService {
         genero.setId(cantidadDeGeneros + 1);
         generoRepository.agregarNuevoGenero(genero);
 
-        return new ResponseEntity<>(genero, headers(), HttpStatus.CREATED);
+        return genero;
     }
 
     @Override
-    public ResponseEntity<List<Genero>> obtenerTodosLosGeneros() {
-        List<Genero> listaDeGeneros = generoRepository.obtenerTodosLosGeneros();
-        return new ResponseEntity<>(listaDeGeneros, headers(), HttpStatus.OK);
+    public List<Genero> obtenerTodosLosGeneros() {
+        List<Genero> generos = generoRepository.obtenerTodosLosGeneros();
+        return generos;
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPelicu
 import com.besysoft.bootcampspringboot.services.interfaces.IPeliculaSerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,7 @@ import java.util.stream.Collectors;
 import static com.besysoft.bootcampspringboot.utilidades.Fechas.formatear;
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.badResquest;
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.notFound;
+import static com.besysoft.bootcampspringboot.utilidades.Validaciones.validarLetrasYNumeros;
 
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 @Service
@@ -37,135 +37,82 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> buscarPeliculaPorTituloOGenero(String tituloOGenero) {
-        if (tituloOGenero.isBlank()) {
-            return badResquest("El titulo o genero no puede ser nulo");
-        }
+    public List<PeliculaSerie> buscarPeliculaPorTituloOGenero(String tituloOGenero) {
+        validarLetrasYNumeros("titulo o genero", tituloOGenero);
 
-        // Valida letras y numeros para peliculas con numeros.
-        Boolean sonSoloLetras = tituloOGenero.matches("^[a-zA-Z0-9 ]+$");
-
-        if (!sonSoloLetras) {
-            return badResquest("Ingrese un titulo o genero valido");
+        List<PeliculaSerie> peliculasPorGenero = peliculaRepository.findAll().stream()
+                .filter(peliculaSerie ->  peliculaSerie.getGenero().getNombre().equalsIgnoreCase(tituloOGenero))
+                .collect(Collectors.toList());
+        if (!peliculasPorGenero.isEmpty()) {
+            return peliculasPorGenero;
         }
 
         Optional<PeliculaSerie> OPeliculasSeries = peliculaRepository.findByTituloIgnoreCase(tituloOGenero);
 
-
-        if (OPeliculasSeries.isEmpty()) {
-
-            List<PeliculaSerie> peliculasPorGenero = peliculaRepository.findAll().stream()
-                    .filter(peliculaSerie ->  peliculaSerie.getGenero().getNombre().equalsIgnoreCase(tituloOGenero))
-                    .collect(Collectors.toList());
-
-            if (!peliculasPorGenero.isEmpty()){
-                return new ResponseEntity<>(peliculasPorGenero, HttpStatus.OK);
-            }else {
-                return notFound("No existe pelicula o genero con el nombre '%s'.", tituloOGenero);
-            }
+        if (OPeliculasSeries.isPresent()){
+            return OPeliculasSeries.stream().collect(Collectors.toList());
+        }else{
+            throw new NullPointerException("No existe pelicula o genero con el nombre '" + tituloOGenero + "'.");
         }
-
-        return new ResponseEntity<>(OPeliculasSeries.get(), HttpStatus.OK);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> buscarPeliculaPorFecha(String desde, String hasta) {
+    public List<PeliculaSerie> buscarPeliculaPorFecha(String desde, String hasta) {
         LocalDate fechaInicio = formatear(desde);
         LocalDate fechaFinal = formatear(hasta);
-        if (desde.compareTo(hasta) > 0) {
-            return badResquest("Rango de fecha inválido.");
+
+        List<PeliculaSerie> peliculas = peliculaRepository.findAllByFechaDeCreacionBetween(fechaInicio,fechaFinal);
+
+        if (peliculas.isEmpty()){
+            throw new NullPointerException("No se encontro peliculas con las fechas ingresadas");
         }
-        List<PeliculaSerie> oPeliculas = peliculaRepository.findAllByFechaDeCreacionBetween(fechaInicio,fechaFinal);
-
-        if (oPeliculas.isEmpty()){
-            return notFound("No se encontro peliculas con las fechas ingresadas");
-        }
-
-
-        return new ResponseEntity(oPeliculas, HttpStatus.ACCEPTED);
+        return peliculas;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> buscarPeliculasPorCalificacion(Integer desde, Integer hasta) {
-        if (desde == null || hasta == null){
-            return badResquest("Las calificaciones no pueden ser nulas");
-        }
-        if (desde < 1 || desde > 5 || hasta < 1 || hasta > 5) {
-            return badResquest("Las calificaciones debe ser del 1 al 5");
-        }
-        if (!(desde<=hasta)){
-            return badResquest("Las calificaciones desde y hasta deben ser iguales o en orden ascendente");
-        }
+    public List<PeliculaSerie> buscarPeliculasPorCalificacion(Integer desde, Integer hasta) {
 
         List<PeliculaSerie> peliculas = peliculaRepository.findAllByCalificacionBetween(desde, hasta);
 
         if(peliculas.isEmpty()){
-            return notFound("No se encontro peliculas con las calificaciones indicadas");
+            throw  new NullPointerException("No se encontro peliculas calificadas de "+desde + "a "+ hasta + ".");
         }
 
-
-        return new ResponseEntity(peliculas, HttpStatus.OK);
+        return peliculas;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public ResponseEntity agregarNuevaPelicula(PeliculaSerie pelicula) {
+    public PeliculaSerie agregarNuevaPelicula(PeliculaSerie pelicula) {
 
-        if (pelicula.getTitulo().isBlank() || pelicula.getTitulo() == null) {
-            return badResquest("El nombre de pelicula no puede ser nulo");
-        }
 
         Optional<PeliculaSerie> optionalPelicula = peliculaRepository.findByTituloIgnoreCase(pelicula.getTitulo());//obtenerTodasLasPeliculas().stream().filter(p -> p.getTitulo().equalsIgnoreCase(pelicula.getTitulo())).findAny();
 
         if (optionalPelicula.isPresent()) {
-            return badResquest("El nombre de pelicula o serie '%s' ingresado ya existe", pelicula.getTitulo());
-        }
-        if (pelicula.getFechaDeCreacion() == null){
-            return badResquest("La fecha de creacion no puede ser nula o estar vacia.");
-        }
-        if (pelicula.getTitulo().isBlank() || pelicula.getTitulo() == null) {
-            return badResquest("El nombre de pelicula no puede ser nulo");
+            throw new IllegalArgumentException("El nombre de la pelicula o serie '"+pelicula.getTitulo()+"' ya existe");
         }
 
-
-        //Long cantidadDePeliculas = Long.valueOf(peliculaRepository.findAll().size());
-        //pelicula.setId(cantidadDePeliculas + 101);
         peliculaRepository.save(pelicula);
 
-        return new ResponseEntity(pelicula, HttpStatus.CREATED);
+        return optionalPelicula.get();
     }
 
     @Override
     @Transactional(readOnly = false)
-    public ResponseEntity actualizarPeliculaPorId(Long id, PeliculaSerie peliculaSerie) {
+    public PeliculaSerie actualizarPeliculaPorId(Long id, PeliculaSerie peliculaSerie) {
         Optional<PeliculaSerie> optionalPelicula = peliculaRepository.findById(id);
 
         if (optionalPelicula.isPresent()) {
             PeliculaSerie pelicula = optionalPelicula.get();
 
-            if (peliculaSerie.getTitulo().isBlank()) {
-                return badResquest("El titulo no puede ser nulo o estar vacio");
-            }
-            if (peliculaSerie.getCalificacion() == null || peliculaSerie.getCalificacion() > 5 || peliculaSerie.getCalificacion() < 1) {
-                return badResquest("La calificacion no puede ser nula y tiene que estar entre 1 y 5");
-            }
-            if (peliculaSerie.getFechaDeCreacion() == null) {
-                return badResquest("La fecha de creacion no puede ser nula");
-            }
-            if (peliculaSerie.getFechaDeCreacion().isAfter(LocalDate.now())) {
-                return badResquest("La fecha no puede ser del futuro.");
-            }
-
-
             peliculaSerie.setId(id);
             peliculaRepository.save(peliculaSerie);
 
-            return new ResponseEntity(pelicula, HttpStatus.OK);
-
+            return pelicula;
         } else {
-            return notFound("El id %s ingresado no existe", id);
+            throw new NullPointerException("El id ingresado numero '"+id+"'  no existe en la base de datos");
         }
 
     }

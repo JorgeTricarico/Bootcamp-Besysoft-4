@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,19 +28,19 @@ public class PersonajeServiceImpl implements IPersonajeService {
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> obtenerTodosLosPersonajes() {
+    public List<Personaje> obtenerTodosLosPersonajes() {
 
-        return (ResponseEntity<?>) personajeRepository.obtenerTodosLosPersonajes();
+        return personajeRepository.obtenerTodosLosPersonajes();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> buscarPorEdadONombre(String dato) {
+    public List<Personaje> buscarPorEdadONombre(String dato) {
         if (dato == null || dato.isBlank()) {
-            return DatoDummyn.badResquest("El dato ingresado no puede ser nulo o estar vacio");
+            throw new IllegalArgumentException("El dato ingresado no puede ser nulo o estar vacio");
         }
         if (!dato.matches("^[a-zA-Z ]+$")) {
-            badResquest("El dato ingresado no es valido, solo letras para personajes o numeros para edades");
+            throw new IllegalArgumentException("El dato ingresado no es valido, solo letras para personajes o numeros para edades");
         }
 
         if (dato.matches("^[0-9]+$")) {
@@ -52,7 +53,7 @@ public class PersonajeServiceImpl implements IPersonajeService {
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> buscarPersonajePorNombre(String nombre) {
+    public List<Personaje> buscarPersonajePorNombre(String nombre) {
         Boolean sonSoloLetras = nombre.matches("^[a-zA-Z ]+$");
 
         if (!sonSoloLetras) {
@@ -61,67 +62,69 @@ public class PersonajeServiceImpl implements IPersonajeService {
 
         Optional<Personaje> oPersonaje = personajeRepository.buscarPersonajePorNombre(nombre);
         if (oPersonaje.isEmpty()) {
-            return notFound("El nombre '%s' no existe en la base de datos", nombre);
+            throw new NullPointerException("El nombre no existe en la base de datos");
         }
         Personaje personaje = oPersonaje.get();
-        HttpHeaders headers = headers();
-        return new ResponseEntity<>(personaje, headers, HttpStatus.CREATED);
+        List<Personaje> listaPersonaje = new ArrayList<>();
+        listaPersonaje.add(personaje);
+        return listaPersonaje;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> buscarPersonajesPorEdad(Integer edad) {
+    public List<Personaje> buscarPersonajesPorEdad(Integer edad) {
         Optional<Personaje> oPersonaje= personajeRepository.buscarPersonajesPorEdad(edad);
 
         if (oPersonaje.isEmpty()) {
-            return notFound("La edad ingresada no corresponde con ningun personaje");
+            throw new NullPointerException("La edad ingresada no corresponde con ningun personaje");
         }
         Personaje personaje = oPersonaje.get();
-
-        return new ResponseEntity<>(personaje,headers(),HttpStatus.ACCEPTED);
+        List<Personaje> listaPersonaje = new ArrayList<>();
+        listaPersonaje.add(personaje);
+        return listaPersonaje;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<?> buscarPersonajePorRangoDeEdad(Integer desde, Integer hasta) {
+    public List<Personaje> buscarPersonajePorRangoDeEdad(Integer desde, Integer hasta) {
         if (desde == null || hasta == null){
-            return badResquest("La edad no pueden ser nulas");
+            throw new IllegalArgumentException("La edad no pueden ser nulas");
         }
         if (desde < 0 || hasta < 0) {
-            return badResquest("Las edades debe ser mayores a 0");
+            throw new IllegalArgumentException("Las edades debe ser mayores a 0");
         }
         if (!(desde<=hasta)){
-            return badResquest("Las edades desde y hasta deben ser iguales o en orden ascendente");
+            throw new IllegalArgumentException("Las edades desde y hasta deben ser iguales o en orden ascendente");
         }
 
         List<Personaje> personajes = personajeRepository.buscarPersonajesPorRangoDeEdad(desde, hasta);
 
         if (personajes.isEmpty()) {
-            return notFound("No se encontro personajes con el rango indicado de edad");
+            throw new NullPointerException("No se encontro personajes con el rango indicado de edad");
         }
 
-        return new ResponseEntity(personajes, headers(), HttpStatus.OK);
+        return personajes;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public ResponseEntity agregarNuevoPersonaje(Personaje personaje) {
+    public Personaje agregarNuevoPersonaje(Personaje personaje) {
         Optional<Personaje> optionalPersonaje = personajeRepository.obtenerTodosLosPersonajes().stream().filter(p -> p.getNombre().equalsIgnoreCase(personaje.getNombre())).findAny();
 
         if (optionalPersonaje.isPresent()) {
-            return badResquest("El nombre del personaje '%s' ingresado ya existe", personaje.getNombre());
+            throw new IllegalArgumentException("El nombre del personaje ingresado ya existe");
         }
         if (personaje.getNombre().isBlank() || personaje.getNombre() == null) {
-            return badResquest("El nombre del personaje no puede estar vacio o ser nulo");
+            throw new IllegalArgumentException("El nombre del personaje no puede estar vacio o ser nulo");
         }
         if (personaje.getEdad()>=0 || personaje.getEdad() == null){
-            return badResquest("La edad no puede ser negativa o nula");
+            throw new IllegalArgumentException("La edad no puede ser negativa o nula");
         }
         if (personaje.getPeso()>0 || personaje.getPeso() == null) {
-            return badResquest("El peso no puede ser negativo o nulo");
+            throw new IllegalArgumentException("El peso no puede ser negativo o nulo");
         }
         if (!personaje.getHistoria().isBlank() || personaje.getHistoria() == null) {
-            return badResquest("La hisotira del personaje no puede estar vacia o ser nula");
+            throw new IllegalArgumentException("La hisotira del personaje no puede estar vacia o ser nula");
         }
 
         Long cantidadDePersonajes = Long.valueOf(personajeRepository.obtenerTodosLosPersonajes().size());
@@ -129,27 +132,27 @@ public class PersonajeServiceImpl implements IPersonajeService {
         personajeRepository.agregarNuevoPersonaje(personaje);
 
 
-        return new ResponseEntity(personaje, headers(), HttpStatus.CREATED);
+        return personaje;
     }
 
     @Override
-    public ResponseEntity actualizarPersonajePorId(Long id, Personaje personajeAct) {
+    public Personaje actualizarPersonajePorId(Long id, Personaje personajeAct) {
         Optional<Personaje> optionalPersonaje = personajeRepository.buscarPersonajePorId(id);
 
         if (optionalPersonaje.isPresent()) {
             Personaje personaje = optionalPersonaje.get();
 
             if (personajeAct.getNombre().isBlank()) {
-                return badResquest("El nombre no puede estar vacio o nulo");
+                throw new IllegalArgumentException("El nombre no puede estar vacio o nulo");
             }
             if (personajeAct.getEdad() == null){
-                return badResquest("La edad no puede ser nula");
+                throw new IllegalArgumentException("La edad no puede ser nula");
             }
             if (personajeAct.getPeso() == null) {
-                return badResquest("El peso no puede ser nulo");
+                throw new IllegalArgumentException("El peso no puede ser nulo");
             }
             if (personajeAct.getHistoria().isBlank()) {
-                return badResquest("La historia no puede ser nula o estar vacia");
+                throw new IllegalArgumentException("La historia no puede ser nula o estar vacia");
             }
 
             personaje.setNombre(personajeAct.getNombre());
@@ -161,9 +164,9 @@ public class PersonajeServiceImpl implements IPersonajeService {
                 personaje.setPeliculasSeries(personajeAct.getPeliculasSeries());
             }
 
-            return new ResponseEntity(personaje, headers(), HttpStatus.OK);
+            return personaje;
         }else{
-            return badResquest("El id %s ingresado no existe", id);
+            throw new IllegalArgumentException("El id ingresado no existe");
         }
     }
 }
