@@ -60,7 +60,7 @@ public class ResponseHttp {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", mensaje);
-        return ResponseEntity.internalServerError().headers(headers()).body(mensajeBody);
+        return new ResponseEntity<>(mensajeBody, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

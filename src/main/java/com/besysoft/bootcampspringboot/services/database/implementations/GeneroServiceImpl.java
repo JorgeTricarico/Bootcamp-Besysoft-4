@@ -37,7 +37,7 @@ public class GeneroServiceImpl implements IGeneroService {
         Boolean existeGenero = generoRepository.existsGeneroByNombreIgnoreCase(genero.getNombre());
 
         if (existeGenero) {
-            throw new RuntimeException("El nombre de genero '" + genero.getNombre() +"' ya existe.");
+            throw new IllegalArgumentException("El nombre de genero '" + genero.getNombre() +"' ya existe.");
         }
         generoRepository.save(genero);
 
@@ -51,8 +51,14 @@ public class GeneroServiceImpl implements IGeneroService {
         Boolean existeGenero = generoRepository.existsGeneroById(id);
 
         if (existeGenero) {
+            if (generoRepository.existsGeneroByNombreIgnoreCase(generoAct.getNombre())){
+                throw new IllegalArgumentException("El nombre de genero '"+generoAct.getNombre()+"' ya existe.");
+            }
             Genero genero  = generoRepository.findById(id).get();
             genero.setNombre(generoAct.getNombre());
+            if (genero.getId() != null){
+                genero.setId(genero.getId());
+            }
             return genero;
         }else{
             throw new NullPointerException("No exise ningun genero en la base de datos.");

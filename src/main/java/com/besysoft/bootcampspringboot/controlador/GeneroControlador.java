@@ -55,7 +55,7 @@ public class GeneroControlador {
         } catch (NullPointerException e){
             return notFound(e.getMessage());
         } catch (RuntimeException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return internalServerError(e.getMessage());
         }
     }
 
