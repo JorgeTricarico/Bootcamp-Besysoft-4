@@ -4,18 +4,16 @@ import com.besysoft.bootcampspringboot.dominio.Personaje;
 
 import com.besysoft.bootcampspringboot.respositories.memory.interfaces.IPersonajeRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.zip.DataFormatException;
 
 @Repository
 public class PersonajeRepositoryImpl implements IPersonajeRepository {
 
     List<Personaje> listaDePersonajes = IPersonajeRepository.crearPersonajes();
 
-    public PersonajeRepositoryImpl() throws DataFormatException {
+    public PersonajeRepositoryImpl() {
     }
 
     @Override
@@ -39,7 +37,7 @@ public class PersonajeRepositoryImpl implements IPersonajeRepository {
     @Override
     public Optional<Personaje> buscarPersonajesPorEdad(Integer edad) {
         return listaDePersonajes.stream()
-                .filter(personaje -> personaje.getEdad() == edad)
+                .filter(personaje -> personaje.getEdad().equals(edad))
                 .findAny();
     }
 
