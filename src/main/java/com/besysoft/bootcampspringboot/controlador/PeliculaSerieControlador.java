@@ -1,7 +1,6 @@
 package com.besysoft.bootcampspringboot.controlador;
 
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
-
 import com.besysoft.bootcampspringboot.services.interfaces.IPeliculaSerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,7 +94,7 @@ public class PeliculaSerieControlador {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity actualizarPelicula (@PathVariable Long id, @RequestBody PeliculaSerie pelicula){
+    public ResponseEntity<?> actualizarPelicula (@PathVariable Long id, @RequestBody PeliculaSerie pelicula){
         try {
             validarPelicula(pelicula);
             return created(peliculaService.actualizarPeliculaPorId(id, pelicula));
