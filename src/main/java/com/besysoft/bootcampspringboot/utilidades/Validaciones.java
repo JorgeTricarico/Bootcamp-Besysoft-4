@@ -73,11 +73,11 @@ public class Validaciones {
 
     public static void validarPersonaje(Personaje personaje){
         validarNombre("personaje", personaje.getNombre());
-        if (personaje.getEdad()>=0 || personaje.getEdad() == null){
-            throw new IllegalArgumentException("La edad tiene que ser un numero y no puede ser nula o estar vacia");
+        if (personaje.getEdad()<0 || personaje.getEdad() == null){
+            throw new IllegalArgumentException("La edad tiene que ser un numero mayor o igual a 0 y no puede ser nula o estar vacia");
         }
-        if (personaje.getPeso()>=0 || personaje.getPeso() == null) {
-            throw new  IllegalArgumentException("El peso no puede ser nulo");
+        if (personaje.getPeso()<0 || personaje.getPeso() == null) {
+            throw new  IllegalArgumentException("El peso no puede ser menor a 0 o sernulo");
         }
         if (personaje.getHistoria().isBlank()) {
             throw new  IllegalArgumentException("La historia no puede ser nula o estar vacia");

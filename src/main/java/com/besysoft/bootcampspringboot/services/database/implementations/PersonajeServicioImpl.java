@@ -105,13 +105,19 @@ public class PersonajeServicioImpl  implements IPersonajeService {
 
         if (optionalPersonaje.isPresent()) {
             Personaje personaje = optionalPersonaje.get();
-            personaje.setId(personaje.getId());
+            /*Long cantidadDePersonajes = personajeRepository.count();
+            System.out.println(cantidadDePersonajes);
+            if (personajeAct.getId()>cantidadDePersonajes){
+                throw new IllegalArgumentException("El id no puede se mayor a la cantidad de personajes que actualmente es: " + cantidadDePersonajes);
+            }
+            personaje.setId(personajeAct.getId());*/
+
             personaje.setNombre(personajeAct.getNombre());
             personaje.setEdad(personajeAct.getEdad());
             personaje.setPeso(personajeAct.getPeso());
             personaje.setHistoria(personajeAct.getHistoria());
 
-            if (personajeAct.getPeliculasSeries().size()>0){
+            if (personajeAct.getPeliculasSeries() != null){
                 personaje.setPeliculasSeries(personajeAct.getPeliculasSeries());
             }
 
