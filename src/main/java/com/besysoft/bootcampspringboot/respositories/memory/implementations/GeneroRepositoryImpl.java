@@ -6,11 +6,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.DataFormatException;
 
 @Repository
 public class GeneroRepositoryImpl implements IGeneroRepository {
 
-    private List<Genero> listaDeGeneros = IGeneroRepository.crearDatosGenero(); //private
+    private List<Genero> listaDeGeneros = IGeneroRepository.crearDatosGenero();
+
+    public GeneroRepositoryImpl() {
+    }
 
     @Override
     public void agregarNuevoGenero(Genero genero) {

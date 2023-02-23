@@ -1,22 +1,18 @@
 package com.besysoft.bootcampspringboot.respositories.memory.interfaces;
 
-import com.besysoft.bootcampspringboot.dominio.Genero;
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
 import com.besysoft.bootcampspringboot.dominio.Personaje;
-import com.besysoft.bootcampspringboot.utilidades.DatoDummyn;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.besysoft.bootcampspringboot.utilidades.DatoDummyn.buscarComoRepoGeneroPorID;
 
 public interface IPeliculaSerieRepository {
 
-    static List<PeliculaSerie> crearPeliculaSerie() {
+    static List<PeliculaSerie> crearPeliculaSerie()  {
 
 
         Personaje jesica = new Personaje(10001L, "Jesica", 28, 70.0, "Jesica es una chica que vive sola en la casa del pueblo que sus padres le dejaron.", new ArrayList<>());

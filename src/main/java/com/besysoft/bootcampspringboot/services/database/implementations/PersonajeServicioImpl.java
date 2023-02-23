@@ -36,16 +36,16 @@ public class PersonajeServicioImpl  implements IPersonajeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Personaje> buscarPorEdadONombre(String dato) {
+    public List<Personaje> buscarPorEdadONombre(String edadONombre) {
 
-        if (dato.matches("^[0-9]+$")) {
-            Integer datoAInteger = Integer.parseInt(dato);
+        if (edadONombre.matches("^[0-9]+$")) {
+            Integer datoAInteger = Integer.parseInt(edadONombre);
             if (datoAInteger<0){
                 throw new IllegalArgumentException("La edad no puede ser menor a 0.");
             }
             return buscarPersonajesPorEdad(datoAInteger);
         } else {
-            return buscarPersonajePorNombre(dato);
+            return buscarPersonajePorNombre(edadONombre);
         }
     }
 
@@ -105,23 +105,11 @@ public class PersonajeServicioImpl  implements IPersonajeService {
 
         if (optionalPersonaje.isPresent()) {
             Personaje personaje = optionalPersonaje.get();
-            /*Long cantidadDePersonajes = personajeRepository.count();
-            System.out.println(cantidadDePersonajes);
-            if (personajeAct.getId()>cantidadDePersonajes){
-                throw new IllegalArgumentException("El id no puede se mayor a la cantidad de personajes que actualmente es: " + cantidadDePersonajes);
-            }
-            personaje.setId(personajeAct.getId());*/
 
-            personaje.setNombre(personajeAct.getNombre());
-            personaje.setEdad(personajeAct.getEdad());
-            personaje.setPeso(personajeAct.getPeso());
-            personaje.setHistoria(personajeAct.getHistoria());
 
-            if (personajeAct.getPeliculasSeries() != null){
-                personaje.setPeliculasSeries(personajeAct.getPeliculasSeries());
-            }
-
-            return personaje;
+            personajeAct.setId(personaje.getId());
+            personajeRepository.save(personajeAct);
+            return personajeAct;
         }else{
             throw new NullPointerException("El id de personaje ingresado numero '"+id+"'  no existe en la base de datos");
         }

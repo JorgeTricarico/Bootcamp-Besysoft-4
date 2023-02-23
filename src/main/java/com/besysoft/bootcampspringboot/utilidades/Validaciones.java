@@ -2,11 +2,8 @@ package com.besysoft.bootcampspringboot.utilidades;
 
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
 import com.besysoft.bootcampspringboot.dominio.Personaje;
-
 import java.time.LocalDate;
 import java.util.zip.DataFormatException;
-
-import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.badResquest;
 
 public class Validaciones {
 
@@ -15,6 +12,28 @@ public class Validaciones {
         validarLetras(nombreObjeto,nombre);
     }
 
+    public static void validarTitulo (String nombreObjeto,String titulo){
+        validarIsBlank(nombreObjeto, titulo);
+        validarLetrasYNumeros(nombreObjeto,titulo);
+    }
+
+    public static void validarPelicula (String nombreObjeto,PeliculaSerie pelicula) throws DataFormatException {
+        validarTitulo(nombreObjeto, pelicula.getTitulo());
+        validarFechaDeCreacion(pelicula);
+        validarCalificacion(pelicula.getCalificacion());
+
+    }
+    public static void validarPelicula(PeliculaSerie pelicula) throws DataFormatException {
+        validarTitulo("pelicula o serie", pelicula.getTitulo());
+        validarFechaDeCreacion(pelicula);
+        validarCalificacion(pelicula.getCalificacion());
+
+    }
+    public static void validarCalificacion(Integer calificacion){
+        if (calificacion == null || calificacion > 5 || calificacion < 1) {
+            throw new IllegalArgumentException("La calificacion no puede ser nula y tiene que estar entre 1 y 5");
+        }
+    }
     public static void validarLetrasYNumeros (String nombreObjeto, String nombre){
         validarIsBlank(nombreObjeto, nombre);
         Boolean sonSoloLetrasYNumeros = nombre.matches("^[a-zA-Z0-9 ]+$");
@@ -37,7 +56,7 @@ public class Validaciones {
         }
     }
 
-    public static void validarCalificacion(Integer desde, Integer hasta){
+    public static void validarCalificacionPorRango(Integer desde, Integer hasta){
         if (desde == null || hasta == null){
             throw new IllegalArgumentException("Las calificaciones no pueden ser nulas");
         }
@@ -49,27 +68,17 @@ public class Validaciones {
         }
     }
     public static void validarFecha(String desde, String hasta) throws DataFormatException {
-        validarNumeros(desde);
-        validarNumeros(hasta);
         validarFechaPorRango(desde, hasta);
     }
     public static void validarFechaDeCreacion(PeliculaSerie pelicula) throws DataFormatException {
         if (pelicula.getFechaDeCreacion() == null){
             throw new DataFormatException("La fecha de creacion no puede ser nula o estar vacia.");
         }
-    }
-    public static void validarPelicula(PeliculaSerie pelicula) throws DataFormatException {
-        validarNombre("pelicula o serie", pelicula.getTitulo());
-        if (pelicula.getFechaDeCreacion() == null){
-            throw new DataFormatException("La fecha de creacion no puede ser nula o estar vacia.");
-        }
-        if (pelicula.getCalificacion() == null || pelicula.getCalificacion() > 5 || pelicula.getCalificacion() < 1) {
-            throw new IllegalArgumentException("La calificacion no puede ser nula y tiene que estar entre 1 y 5");
-        }
         if (pelicula.getFechaDeCreacion().isAfter(LocalDate.now())) {
             throw new DataFormatException("La fecha no puede ser del futuro.");
         }
     }
+
 
     public static void validarPersonaje(Personaje personaje){
         validarNombre("personaje", personaje.getNombre());

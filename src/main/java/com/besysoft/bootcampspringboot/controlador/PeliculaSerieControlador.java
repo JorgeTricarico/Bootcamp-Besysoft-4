@@ -34,9 +34,9 @@ public class PeliculaSerieControlador {
     }
 
     @GetMapping("/{tituloOGenero}")
-    public ResponseEntity<?> buscarPorTitulo(@PathVariable String tituloOGenero) {
+    public ResponseEntity<?> buscarPorTituloOGenero(@PathVariable String tituloOGenero) {
         try {
-            validarNombre("titulo o genero",tituloOGenero);
+            validarTitulo("pelicula, serie o Genero", tituloOGenero);
             List<PeliculaSerie> peliculaSeries = peliculaService.buscarPeliculaPorTituloOGenero(tituloOGenero);
             return ok(peliculaSeries);
         }catch (IllegalArgumentException e){
@@ -68,7 +68,7 @@ public class PeliculaSerieControlador {
     @GetMapping("/calificacion")
     public ResponseEntity<?> buscarPorCalificacion(@RequestParam Integer desde, @RequestParam Integer hasta){
         try {
-            validarCalificacion(desde, hasta);
+            validarCalificacionPorRango(desde, hasta);
             return ok(peliculaService.buscarPeliculasPorCalificacion(desde, hasta));
         } catch (IllegalArgumentException e) {
             return badResquest(e.getMessage());
@@ -83,15 +83,14 @@ public class PeliculaSerieControlador {
     @PostMapping
     public ResponseEntity<?> agregarPelicula(@RequestBody PeliculaSerie pelicula){
         try {
-            validarNombre("pelicula o serie", pelicula.getTitulo());
-            validarFechaDeCreacion(pelicula);
+            validarPelicula("pelicula o serie", pelicula);
             return created(peliculaService.agregarNuevaPelicula(pelicula));
         }catch (IllegalArgumentException e){
             return badResquest(e.getMessage());
         } catch (DataFormatException e) {
             return badResquest(e.getMessage());
         }catch (RuntimeException e){
-            return internalServerError(e.getMessage());
+            return internalServerError(e.toString());
         }
     }
 
@@ -99,7 +98,7 @@ public class PeliculaSerieControlador {
     public ResponseEntity actualizarPelicula (@PathVariable Long id, @RequestBody PeliculaSerie pelicula){
         try {
             validarPelicula(pelicula);
-            return created(peliculaService.agregarNuevaPelicula(pelicula));
+            return created(peliculaService.actualizarPeliculaPorId(id, pelicula));
         }catch (NullPointerException e){
             return notFound(e.getMessage());
         }catch (IllegalArgumentException e){

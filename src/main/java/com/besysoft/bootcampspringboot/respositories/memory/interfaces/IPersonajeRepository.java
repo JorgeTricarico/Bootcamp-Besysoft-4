@@ -6,12 +6,12 @@ import com.besysoft.bootcampspringboot.dominio.Personaje;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+import java.util.zip.DataFormatException;
 
 
 public interface IPersonajeRepository {
 
-    static List<Personaje> crearPersonajes() {
+    static List<Personaje> crearPersonajes()  {
 
         IPeliculaSerieRepository.crearPeliculaSerie().stream().forEach(peliculaSerie ->
                 peliculaSerie.getPersonajesAsociados().forEach(personaje ->

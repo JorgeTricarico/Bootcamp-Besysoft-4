@@ -1,14 +1,7 @@
 package com.besysoft.bootcampspringboot.utilidades;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-
-import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.badResquest;
 
 public class Fechas {
 
@@ -19,11 +12,12 @@ public class Fechas {
                     .parseCaseInsensitive()
                     .append(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                     .toFormatter();
-        }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+            return LocalDate.parse(fecha, formateador);
+        }catch (RuntimeException e){
+            throw new IllegalArgumentException("La fecha ingresada debe tener el formato dd-MM-yyyy");//throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
 
-        return LocalDate.parse(fecha, formateador);
+
     }
 
     /*public static ResponseEntity validarFecha(LocalDate fechaDeCreacion){

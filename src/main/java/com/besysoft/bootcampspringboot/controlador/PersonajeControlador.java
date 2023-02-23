@@ -29,10 +29,10 @@ public class PersonajeControlador {
         }
     }
     @GetMapping("/{dato}")
-    public ResponseEntity<?> buscarPorEdadONombre(@PathVariable String dato) {
+    public ResponseEntity<?> buscarPorEdadONombre(@PathVariable String edadONombre) {
         try {
-            validarLetrasYNumeros("edad o nombre", dato);
-            return ok(personajeService.buscarPorEdadONombre(dato));
+            validarLetrasYNumeros("edad o nombre", edadONombre);
+            return ok(personajeService.buscarPorEdadONombre(edadONombre));
         }catch (IllegalArgumentException e){
             return badResquest(e.getMessage());
         }catch (RuntimeException e){

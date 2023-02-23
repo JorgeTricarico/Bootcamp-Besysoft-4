@@ -1,17 +1,9 @@
 package com.besysoft.bootcampspringboot.dominio;
-
-import com.besysoft.bootcampspringboot.utilidades.Fechas.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-
 import java.util.List;
-
 import static com.besysoft.bootcampspringboot.utilidades.Fechas.formatear;
 
 

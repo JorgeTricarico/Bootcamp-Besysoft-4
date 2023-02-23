@@ -8,11 +8,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
 
 @Repository
 public class PersonajeRepositoryImpl implements IPersonajeRepository {
 
     List<Personaje> listaDePersonajes = IPersonajeRepository.crearPersonajes();
+
+    public PersonajeRepositoryImpl() throws DataFormatException {
+    }
 
     @Override
     public List<Personaje> obtenerTodosLosPersonajes() {

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
 
 import static com.besysoft.bootcampspringboot.utilidades.Fechas.formatear;
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.badResquest;
@@ -61,7 +62,7 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PeliculaSerie> buscarPeliculaPorFecha(String desde, String hasta) {
+    public List<PeliculaSerie> buscarPeliculaPorFecha(String desde, String hasta) throws DataFormatException {
         LocalDate fechaInicio = formatear(desde);
         LocalDate fechaFinal = formatear(hasta);
 
@@ -99,7 +100,7 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
 
         peliculaRepository.save(pelicula);
 
-        return optionalPelicula.get();
+        return pelicula;
     }
 
     @Override
@@ -111,9 +112,9 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
             PeliculaSerie pelicula = optionalPelicula.get();
 
             peliculaSerie.setId(id);
-            peliculaRepository.save(peliculaSerie);
+            return peliculaRepository.save(peliculaSerie);
 
-            return pelicula;
+            //return peliculaSerie;
         } else {
             throw new NullPointerException("El id ingresado numero '"+id+"'  no existe en la base de datos");
         }
