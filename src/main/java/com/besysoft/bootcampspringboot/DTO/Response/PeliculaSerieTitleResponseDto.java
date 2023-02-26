@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PeliculaTitleResponseDto {
+public class PeliculaSerieTitleResponseDto {
 
     String titulo;
 }

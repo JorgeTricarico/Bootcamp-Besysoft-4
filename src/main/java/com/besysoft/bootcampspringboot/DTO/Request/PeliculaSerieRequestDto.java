@@ -1,6 +1,5 @@
 package com.besysoft.bootcampspringboot.DTO.Request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +7,7 @@ import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
-public class PeliculaSeriaRequestDto {
+public class PeliculaSerieRequestDto {
 
     @NotBlank(message = "El titulo de pelicula o serie no puede ser nulo o estar vacio.")
     @Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "El titulo solo puede contener letras, numeros y espacios. Regex: [a-zA-Z0-9 ]")

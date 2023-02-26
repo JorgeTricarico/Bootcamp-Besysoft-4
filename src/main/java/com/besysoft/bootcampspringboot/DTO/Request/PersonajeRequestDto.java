@@ -1,6 +1,7 @@
 package com.besysoft.bootcampspringboot.DTO.Request;
 
 import javax.validation.constraints.*;
+import java.util.List;
 
 public class PersonajeRequestDto {
 
@@ -20,4 +21,6 @@ public class PersonajeRequestDto {
     @Size(message = "La historia no puede contener mas de 255 carácteres.", max = 255)
     @NotBlank(message = "La historia no puede ser nula o estar vacía.")
     private String historia;
+
+    private List<PeliculaSerieRequestDto> peliculasSeries;
 }

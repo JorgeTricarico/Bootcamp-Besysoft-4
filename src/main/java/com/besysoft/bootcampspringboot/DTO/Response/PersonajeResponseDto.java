@@ -1,6 +1,5 @@
 package com.besysoft.bootcampspringboot.DTO.Response;
 
-import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,5 +13,5 @@ public class PersonajeResponseDto {
     private Integer edad;
     private Double peso;
     private String historia;
-    private List<PeliculaTitleResponseDto> peliculasSeries;
+    private List<PeliculaSerieTitleResponseDto> peliculasSeries;
 }
