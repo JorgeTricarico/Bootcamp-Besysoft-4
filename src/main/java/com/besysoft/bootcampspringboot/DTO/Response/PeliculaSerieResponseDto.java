@@ -11,6 +11,6 @@ public class PeliculaSerieResponseDto {
 
     private String titulo;
     private String fechaDeCreacion;
-    private GeneroResponseDto nombreGenero;
+    private String nombreGenero;
     private List<PersonajeNameResponseDto> personajesAsociados;
 }

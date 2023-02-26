@@ -13,7 +13,7 @@ public interface IPeliculaSerieMapper {
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "genero", ignore = true),
-            @Mapping(target = "personajes", ignore = true),
+            @Mapping(target = "personajesAsociados", ignore = true),
             @Mapping(target = "fechaDeCreacion", dateFormat = "dd-MM-yyyy")
     })
     PeliculaSerie mapToEntity(PeliculaSerieRequestDto dto);
