@@ -9,7 +9,7 @@ import org.mapstruct.Mappings;
 
 import javax.validation.constraints.Min;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface IPersonajeMapper {
 
     @Mappings({
