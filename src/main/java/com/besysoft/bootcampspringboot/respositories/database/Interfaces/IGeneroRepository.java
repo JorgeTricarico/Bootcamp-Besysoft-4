@@ -11,6 +11,4 @@ public interface IGeneroRepository extends JpaRepository<Genero, Long> {
     Boolean existsGeneroById(Long id);
     Optional<Genero> findGeneroByNombreIgnoreCase(String nombre);
     Boolean existsGeneroByNombreIgnoreCase(String nombre);
-
-
 }

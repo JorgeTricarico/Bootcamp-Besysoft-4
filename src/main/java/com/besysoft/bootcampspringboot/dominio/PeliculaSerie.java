@@ -1,9 +1,12 @@
 package com.besysoft.bootcampspringboot.dominio;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+
 import static com.besysoft.bootcampspringboot.utilidades.Fechas.formatear;
 
 
@@ -13,7 +16,7 @@ public class PeliculaSerie implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "ID")
     private Long id;
 
     @Column(length = 60, name = "TITULO", nullable = false, unique = true)

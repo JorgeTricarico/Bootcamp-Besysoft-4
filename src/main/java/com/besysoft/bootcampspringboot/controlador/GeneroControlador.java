@@ -3,7 +3,6 @@ package com.besysoft.bootcampspringboot.controlador;
 import com.besysoft.bootcampspringboot.dominio.Genero;
 import com.besysoft.bootcampspringboot.services.interfaces.IGeneroService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.*;
-import static com.besysoft.bootcampspringboot.utilidades.Validaciones.*;
+import static com.besysoft.bootcampspringboot.utilidades.Validaciones.validarNombre;
 
 
 @RestController

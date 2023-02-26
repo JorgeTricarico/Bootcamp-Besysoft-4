@@ -1,7 +1,6 @@
 package com.besysoft.bootcampspringboot.services.database.implementations;
 
 import com.besysoft.bootcampspringboot.dominio.Personaje;
-
 import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPersonajeRepository;
 import com.besysoft.bootcampspringboot.services.interfaces.IPersonajeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.*;
 import static com.besysoft.bootcampspringboot.utilidades.Validaciones.validarLetras;
 
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
@@ -105,7 +103,6 @@ public class PersonajeServicioImpl  implements IPersonajeService {
 
         if (optionalPersonaje.isPresent()) {
             Personaje personaje = optionalPersonaje.get();
-
 
             personajeAct.setId(personaje.getId());
             personajeRepository.save(personajeAct);

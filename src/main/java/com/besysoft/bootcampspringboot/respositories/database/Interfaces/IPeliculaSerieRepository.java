@@ -13,5 +13,4 @@ public interface IPeliculaSerieRepository extends JpaRepository<PeliculaSerie,Lo
     Optional<PeliculaSerie> findByTituloIgnoreCase(String titulo);
     List<PeliculaSerie> findAllByFechaDeCreacionBetween(LocalDate desde, LocalDate hasta);
     List<PeliculaSerie> findAllByCalificacionBetween(Integer start, Integer end);
-    Boolean existsByTitulo(String titulo);
 }

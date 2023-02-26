@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -40,9 +41,7 @@ public class DatoDummyn {
         List<String> listaPeliculaSerieTerror = new ArrayList<>(Arrays.asList(("La Huerfana 1"), ("La Huerfana 2"), ("La Huerfana 3"), ("La Huerfana 4"), ("Juego del Miedo 1"), ("Juego del Miedo 2"), ("Juego del Miedo 3"), ("Juego del Miedo 4")));
 
 
-        List<Genero> listaDeGeneros = new ArrayList<>(Arrays.asList(new Genero(1L, "Drama"), new Genero(2L, "Aventura"), new Genero(3L, "Accion"), new Genero(4L, "Terror")));
-
-        return listaDeGeneros;
+        return new ArrayList<>(Arrays.asList(new Genero(1L, "Drama"), new Genero(2L, "Aventura"), new Genero(3L, "Accion"), new Genero(4L, "Terror")));
     } //GeneroRepository
 
     private static List<Personaje> crearPersonajes() {
@@ -50,16 +49,14 @@ public class DatoDummyn {
 IPeliculaSerieRepository.crearPeliculaSerie().stream().forEach(peliculaSerie ->
                 peliculaSerie.getPersonajesAsociados().forEach(personaje ->
                     personaje.getPeliculasSeries().add(peliculaSerie))
-
-
         );
 
 
         List<Personaje> listaPersonajes = listaDePeliculas
                 .stream()
-                    .flatMap(peliculaSerie -> peliculaSerie.getPersonajesAsociados().stream())
-                    .distinct()
-                    .collect(Collectors.toList());
+                .flatMap(peliculaSerie -> peliculaSerie.getPersonajesAsociados().stream())
+                .distinct()
+                .collect(Collectors.toList());
 
 
 
@@ -239,7 +236,7 @@ IPeliculaSerieRepository.crearPeliculaSerie().stream().forEach(peliculaSerie ->
         mensajeBody.put("mensaje", mensaje);
         return new ResponseEntity<>(mensajeBody, headers(), HttpStatus.NOT_FOUND);
     } //Utilidades respuesta
-    public static ResponseEntity<?> notFound(String mensaje, String... argumentoFormat) {
+    public static ResponseEntity<?> notFound(String mensaje, String argumentoFormat) {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", String.format(mensaje, argumentoFormat));
@@ -291,8 +288,8 @@ IPeliculaSerieRepository.crearPeliculaSerie().stream().forEach(peliculaSerie ->
 
 
         return DatoDummyn.listaDePeliculas.stream()
-                        .filter(pelis -> pelis.getTitulo().equalsIgnoreCase(titulo))
-                        .findAny();
+                .filter(pelis -> pelis.getTitulo().equalsIgnoreCase(titulo))
+                .findAny();
     } //PeliculaRepository
 
 
@@ -358,12 +355,12 @@ IPeliculaSerieRepository.crearPeliculaSerie().stream().forEach(peliculaSerie ->
 
     public static List<PeliculaSerie> buscarComoRepoPeliculaPorGenero (String nombreDeGenero){
 
-    return DatoDummyn.listaDePeliculas.stream()
-            .filter(p -> p.getGenero().getNombre().equalsIgnoreCase(nombreDeGenero))
-            .collect(Collectors.toList());
+        return DatoDummyn.listaDePeliculas.stream()
+                .filter(p -> p.getGenero().getNombre().equalsIgnoreCase(nombreDeGenero))
+                .collect(Collectors.toList());
 
 
-       /* Optional<Genero> oGenero = DatoDummyn.listaDeGeneros
+        /* Optional<Genero> oGenero = DatoDummyn.listaDeGeneros
                 .stream()
                 .filter(genero -> genero.getNombre().equalsIgnoreCase(nombreDeGenero))
                 .findAny();
@@ -535,18 +532,18 @@ IPeliculaSerieRepository.crearPeliculaSerie().stream().forEach(peliculaSerie ->
         if(optionalPelicula.isPresent()){
             PeliculaSerie pelicula = optionalPelicula.get();
 
-                    if(peliculaSerie.getTitulo().isBlank()) {
-                        return badResquest("El titulo no puede ser nulo o estar vacio");
-                    }
-                    if(peliculaSerie.getCalificacion() == null) {
-                        return badResquest("La calificacion no puede ser nula");
-                    }
-                    if(peliculaSerie.getFechaDeCreacion() == null) {
-                        return badResquest("La fecha de creacion no puede ser nula");
-                    }
-                    pelicula.setTitulo(peliculaSerie.getTitulo());
-                    pelicula.setCalificacion(peliculaSerie.getCalificacion());
-                    pelicula.setFechaDeCreacion(peliculaSerie.getFechaDeCreacion());
+            if(peliculaSerie.getTitulo().isBlank()) {
+                return badResquest("El titulo no puede ser nulo o estar vacio");
+            }
+            if(peliculaSerie.getCalificacion() == null) {
+                return badResquest("La calificacion no puede ser nula");
+            }
+            if(peliculaSerie.getFechaDeCreacion() == null) {
+                return badResquest("La fecha de creacion no puede ser nula");
+            }
+            pelicula.setTitulo(peliculaSerie.getTitulo());
+            pelicula.setCalificacion(peliculaSerie.getCalificacion());
+            pelicula.setFechaDeCreacion(peliculaSerie.getFechaDeCreacion());
 
             return new ResponseEntity(pelicula, headers(), HttpStatus.OK);
         } else {
