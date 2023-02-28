@@ -1,5 +1,8 @@
 package com.besysoft.bootcampspringboot.services.database.implementations;
 
+import com.besysoft.bootcampspringboot.DTO.Mapper.IPersonajeMapper;
+import com.besysoft.bootcampspringboot.DTO.Request.PersonajeRequestDto;
+import com.besysoft.bootcampspringboot.DTO.Response.PersonajeResponseDto;
 import com.besysoft.bootcampspringboot.dominio.Personaje;
 import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPersonajeRepository;
 import com.besysoft.bootcampspringboot.services.interfaces.IPersonajeService;
@@ -10,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.besysoft.bootcampspringboot.utilidades.Validaciones.validarLetras;
 
@@ -19,22 +23,30 @@ public class PersonajeServicioImpl  implements IPersonajeService {
 
     @Autowired
     IPersonajeRepository personajeRepository;
+    @Autowired
+    IPersonajeMapper mapper;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Personaje> obtenerTodosLosPersonajes() {
+    public List<PersonajeResponseDto> obtenerTodosLosPersonajes() {
             List<Personaje> personajes = personajeRepository.findAll();
             if (personajes.isEmpty()){
                 throw  new NullPointerException("No hay personajes en la base de datos.");
             }
-            return personajes;
+
+            List<PersonajeResponseDto> personajeResponseDtos = personajes.stream()
+                    .map(personaje -> mapper
+                            .mapToDto(personaje))
+                    .collect(Collectors.toList());
+
+            return personajeResponseDtos;
 
 
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Personaje> buscarPorEdadONombre(String edadONombre) {
+    public List<PersonajeResponseDto> buscarPorEdadONombre(String edadONombre) {
 
         if (edadONombre.matches("^[0-9]+$")) {
             Integer datoAInteger = Integer.parseInt(edadONombre);
@@ -49,7 +61,7 @@ public class PersonajeServicioImpl  implements IPersonajeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Personaje> buscarPersonajePorNombre(String nombre) {
+    public List<PersonajeResponseDto> buscarPersonajePorNombre(String nombre) {
 
         validarLetras("nombre de personaje", nombre);
 
@@ -58,55 +70,71 @@ public class PersonajeServicioImpl  implements IPersonajeService {
             throw new NullPointerException("El nombre '"+nombre+"' no existe en la base de datos");
         }
 
-        return personajes;
+        List<PersonajeResponseDto> personajeResponseDtos = personajes.stream()
+                .map(personaje -> mapper
+                        .mapToDto(personaje))
+                .collect(Collectors.toList());
+
+        return personajeResponseDtos;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Personaje> buscarPersonajesPorEdad(Integer edad) {
+    public List<PersonajeResponseDto> buscarPersonajesPorEdad(Integer edad) {
         List<Personaje> personajes= personajeRepository.findByEdad(edad);
 
         if (personajes.isEmpty()) {
             throw new NullPointerException("La edad '"+edad+"' no corresponde con ningun personaje");
         }
-        return personajes;
+        List<PersonajeResponseDto> personajeResponseDtos = personajes.stream()
+                .map(personaje -> mapper
+                        .mapToDto(personaje))
+                .collect(Collectors.toList());
+        return personajeResponseDtos;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Personaje> buscarPersonajePorRangoDeEdad(Integer desde, Integer hasta) {
+    public List<PersonajeResponseDto> buscarPersonajePorRangoDeEdad(Integer desde, Integer hasta) {
         List<Personaje> personajes = personajeRepository.findByEdadBetween(desde, hasta);
 
         if (personajes.isEmpty()) {
             throw new NullPointerException("No se encontraron personajes en el rango de las edades ingresadas");
         }
-        return personajes;
+        List<PersonajeResponseDto> personajeResponseDtos = personajes.stream()
+                .map(personaje -> mapper
+                        .mapToDto(personaje))
+                .collect(Collectors.toList());
+
+        return personajeResponseDtos;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public Personaje agregarNuevoPersonaje(Personaje personaje) {
-        Optional<Personaje> optionalPersonaje = personajeRepository.findAll().stream().filter(p -> p.getNombre().equalsIgnoreCase(personaje.getNombre())).findAny();
+    public PersonajeResponseDto agregarNuevoPersonaje(PersonajeRequestDto personajeRequestDto) {
+        Optional<Personaje> optionalPersonaje = personajeRepository.findAll().stream().filter(p -> p.getNombre().equalsIgnoreCase(personajeRequestDto.getNombre())).findAny();
 
         if (optionalPersonaje.isPresent()) {
-            throw new IllegalArgumentException("El nombre ingresado del personaje '"+ personaje.getNombre()+"' ya existe");
+            throw new IllegalArgumentException("El nombre ingresado del personaje '"+ personajeRequestDto.getNombre()+"' ya existe");
         }
+        Personaje personaje = mapper.mapToEntity(personajeRequestDto);
         personajeRepository.save(personaje);
 
-        return personaje;
+        PersonajeResponseDto personajeResponseDto = mapper.mapToDto(personaje);
+        return personajeResponseDto;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public Personaje actualizarPersonajePorId(Long id, Personaje personajeAct) {
+    public PersonajeResponseDto actualizarPersonajePorId(Long id, PersonajeRequestDto personajeRequestDto) {
         Optional<Personaje> optionalPersonaje = personajeRepository.findById(id);
 
         if (optionalPersonaje.isPresent()) {
-            Personaje personaje = optionalPersonaje.get();
-
-            personajeAct.setId(personaje.getId());
-            personajeRepository.save(personajeAct);
-            return personajeAct;
+            Personaje personaje = mapper.mapToEntity(personajeRequestDto);
+            personaje.setId(id);
+            personajeRepository.save(personaje);
+            PersonajeResponseDto personajeResponseDto = mapper.mapToDto(personaje);
+            return personajeResponseDto;
         }else{
             throw new NullPointerException("El id de personaje ingresado numero '"+id+"'  no existe en la base de datos");
         }

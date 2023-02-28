@@ -1,8 +1,13 @@
 package com.besysoft.bootcampspringboot.DTO.Request;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.*;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 public class PersonajeRequestDto {
 
     @NotBlank(message = "El nombre del personaje no puede ser nulo ni estar vacio.")
@@ -10,7 +15,7 @@ public class PersonajeRequestDto {
     @Size(min = 1, max = 50,message = "El nombre del personaje debe tener un de 1 a 50 caracteres.")
     private String nombre;
 
-    @Max(message = "La edad no puede ser mayor a 127.", value = 127)
+    @Min(message = "La edad no puede ser menor a 0.", value = 0)
     @NotNull(message = "La edad no puede ser nula.")
     private Integer edad;
 

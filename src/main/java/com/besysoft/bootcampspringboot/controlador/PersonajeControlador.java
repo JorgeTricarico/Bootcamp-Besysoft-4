@@ -1,14 +1,19 @@
 package com.besysoft.bootcampspringboot.controlador;
 
-import com.besysoft.bootcampspringboot.dominio.Personaje;
+import com.besysoft.bootcampspringboot.DTO.Request.PersonajeRequestDto;
 import com.besysoft.bootcampspringboot.services.interfaces.IPersonajeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
 import static com.besysoft.bootcampspringboot.utilidades.ResponseHttp.*;
 import static com.besysoft.bootcampspringboot.utilidades.Validaciones.*;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/personajes")
 public class PersonajeControlador {
@@ -21,8 +26,10 @@ public class PersonajeControlador {
         try {
             return ok(personajeService.obtenerTodosLosPersonajes());
         }catch (NullPointerException e){
+            logValidation(e);
             return notFound(e.getMessage());
         }catch (RuntimeException e){
+            logUnexpected(e);
             return internalServerError("Error en la conección a la base de datos");
         }
     }
@@ -32,8 +39,10 @@ public class PersonajeControlador {
             validarLetrasYNumeros("edad o nombre", edadONombre);
             return ok(personajeService.buscarPorEdadONombre(edadONombre));
         }catch (IllegalArgumentException e){
+            logValidation(e);
             return badResquest(e.getMessage());
         }catch (RuntimeException e){
+            logUnexpected(e);
             return internalServerError(e.getMessage());
         }
     }
@@ -44,40 +53,52 @@ public class PersonajeControlador {
             validarEdadPorRango(desde, hasta);
             return ok(personajeService.buscarPersonajePorRangoDeEdad(desde, hasta));
         }catch (IllegalArgumentException e){
+            logValidation(e);
             return badResquest(e.getMessage());
         }catch (NullPointerException e){
+            logValidation(e);
             return notFound(e.getMessage());
         }catch (RuntimeException e){
+            logUnexpected(e);
             return internalServerError(e.getMessage());
         }
     }
     @PostMapping
-    public ResponseEntity<?> agregarPersonaje(@RequestBody Personaje personaje){
+    public ResponseEntity<?> agregarPersonaje(@RequestBody @Valid PersonajeRequestDto personajeRequestDto, BindingResult result){
         try {
-            validarPersonaje(personaje);
-            return created(personajeService.agregarNuevoPersonaje(personaje));
+            if(result.hasErrors()){
+                return errorInValidator(result);
+            }
+            return created(personajeService.agregarNuevoPersonaje(personajeRequestDto));
         }catch (IllegalArgumentException e){
+            logValidation(e);
             return badResquest(e.getMessage());
         }catch (NullPointerException e){
+            logValidation(e);
             return notFound(e.getMessage());
         }catch (RuntimeException e){
+            logUnexpected(e);
             return internalServerError(e.getMessage());
         }
 
     }
     @PutMapping("/{id}")
-    public ResponseEntity actualizarPersonajePorId (@PathVariable Long id, @RequestBody Personaje personaje){
+    public ResponseEntity actualizarPersonajePorId (@PathVariable Long id, @RequestBody @Valid PersonajeRequestDto personajeRequestDto, BindingResult result){
         try {
-            validarPersonaje(personaje);
-            return ok(personajeService.actualizarPersonajePorId(id, personaje));
+            if(result.hasErrors()){
+                return errorInValidator(result);
+            }
+            return ok(personajeService.actualizarPersonajePorId(id, personajeRequestDto));
         }catch (IllegalArgumentException e){
+            logValidation(e);
             return badResquest(e.getMessage());
         }catch (NullPointerException e){
+            logValidation(e);
             return notFound(e.getMessage());
         }catch (RuntimeException e){
+            logUnexpected(e);
             return internalServerError(e.getMessage());
         }
-
     }
 
 

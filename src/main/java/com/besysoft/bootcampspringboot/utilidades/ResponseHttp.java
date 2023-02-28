@@ -1,13 +1,19 @@
 package com.besysoft.bootcampspringboot.utilidades;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class ResponseHttp {
+
 
     public static ResponseEntity<?> ok(Object object) {
         Map<String, Object> mensajeBody = new HashMap<>();
@@ -69,5 +75,16 @@ public class ResponseHttp {
         HttpHeaders headers = new HttpHeaders();
         headers.set("app-info", "contacto@bootcamp.com");
         return headers;
+    }
+
+    public static ResponseEntity<?> errorInValidator(BindingResult result){
+
+            Map<String, String> validaciones = new HashMap<>();
+        List<FieldError> fieldErrors = result.getFieldErrors();
+        fieldErrors.forEach(error -> {
+                log.info("Se lanzo una validacion @Valid: \n Atributo: " + error.getField() + " - Validacion: " + error.getDefaultMessage());
+                validaciones.put(error.getField(), error.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(validaciones);
     }
 }

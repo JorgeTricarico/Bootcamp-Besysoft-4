@@ -1,17 +1,18 @@
 package com.besysoft.bootcampspringboot.services.interfaces;
 
-import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
+import com.besysoft.bootcampspringboot.DTO.Request.PeliculaSerieRequestDto;
+import com.besysoft.bootcampspringboot.DTO.Response.PeliculaSerieResponseDto;
 
 import java.util.List;
 import java.util.zip.DataFormatException;
 
 public interface IPeliculaSerieService {
 
-    List<PeliculaSerie> obtenerTodasLasPeliculas();
-    List<PeliculaSerie> buscarPeliculaPorTituloOGenero(String tituloOGenero);
-    List<PeliculaSerie> buscarPeliculaPorFecha(String desde, String hasta) throws DataFormatException;
-    List<PeliculaSerie> buscarPeliculasPorCalificacion(Integer desde, Integer hasta);
-    PeliculaSerie agregarNuevaPelicula(PeliculaSerie pelicula) throws DataFormatException;
-    PeliculaSerie actualizarPeliculaPorId(Long id, PeliculaSerie peliculaSerie) throws DataFormatException;
+    List<PeliculaSerieResponseDto> obtenerTodasLasPeliculas();
+    List<PeliculaSerieResponseDto> buscarPeliculaPorTituloOGenero(String tituloOGenero);
+    List<PeliculaSerieResponseDto> buscarPeliculaPorFecha(String desde, String hasta) throws DataFormatException;
+    List<PeliculaSerieResponseDto> buscarPeliculasPorCalificacion(Integer desde, Integer hasta);
+    PeliculaSerieResponseDto agregarNuevaPelicula(PeliculaSerieRequestDto peliculaRequestDto) throws DataFormatException;
+    PeliculaSerieResponseDto actualizarPeliculaPorId(Long id, PeliculaSerieRequestDto peliculaRequestDto) throws DataFormatException;
 
 }

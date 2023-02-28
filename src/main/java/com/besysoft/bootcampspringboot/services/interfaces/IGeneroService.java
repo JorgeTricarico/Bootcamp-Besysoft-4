@@ -1,6 +1,7 @@
 package com.besysoft.bootcampspringboot.services.interfaces;
 
-import com.besysoft.bootcampspringboot.dominio.Genero;
+import com.besysoft.bootcampspringboot.DTO.Request.GeneroRequestDto;
+import com.besysoft.bootcampspringboot.DTO.Response.GeneroResponseDto;
 
 import java.util.List;
 
@@ -8,9 +9,9 @@ import java.util.List;
 
 public interface IGeneroService {
 
-    List<Genero> obtenerTodosLosGeneros();
-    Genero agregarNuevoGenero(Genero genero);
-    Genero actualizarGeneroPorId(Long id, Genero generoAct);
+    List<GeneroResponseDto> obtenerTodosLosGeneros();
+    GeneroRequestDto agregarNuevoGenero(GeneroRequestDto generoRequestDto);
+    GeneroRequestDto actualizarGeneroPorId(Long id, GeneroRequestDto generoRequestDto);
 
 
 }

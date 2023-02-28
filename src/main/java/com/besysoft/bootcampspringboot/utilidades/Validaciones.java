@@ -2,10 +2,14 @@ package com.besysoft.bootcampspringboot.utilidades;
 
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
 import com.besysoft.bootcampspringboot.dominio.Personaje;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.DataFormatException;
 
+@Slf4j
 public class Validaciones {
 
     public static void validarNombre(String nombreObjeto, String nombre) {
@@ -122,4 +126,24 @@ public class Validaciones {
             throw new IllegalArgumentException("Las edades desde y hasta deben ser iguales o en orden ascendente");
         }
     }
+
+
+    public static void logValidation(Throwable e){
+        Map<String, Object> mensajeBody = new HashMap<>();
+        mensajeBody.put("Cause ", e.getStackTrace()[0].toString()
+                + "\n" + e.getStackTrace()[1].toString() + "\n");
+        mensajeBody.put("Message ", e.getMessage() + "\n");
+        mensajeBody.put("Exception ", e.getClass().getSimpleName() + "\n");
+        log.info("Se lanzo una validacion personalizada: \n" + mensajeBody);
+    }
+
+    public static void logUnexpected(Throwable e){
+        Map<String, Object> mensajeBody = new HashMap<>();
+        mensajeBody.put("Cause ", e.getStackTrace()[0].toString()
+                + "\n" + e.getStackTrace()[1].toString() + "\n");
+        mensajeBody.put("Message ", e.getMessage() + "\n");
+        mensajeBody.put("Exception ", e.getClass().getSimpleName() + "\n");
+        log.info("Se lanzo una excepcion inesperada: \n" + mensajeBody);
+    }
+
 }
