@@ -80,8 +80,7 @@ public class ResponseHttp {
     public static ResponseEntity<?> errorInValidator(BindingResult result){
 
             Map<String, String> validaciones = new HashMap<>();
-        List<FieldError> fieldErrors = result.getFieldErrors();
-        fieldErrors.forEach(error -> {
+        result.getFieldErrors().forEach(error -> {
                 log.info("Se lanzo una validacion @Valid: \n Atributo: " + error.getField() + " - Validacion: " + error.getDefaultMessage());
                 validaciones.put(error.getField(), error.getDefaultMessage());
             });
