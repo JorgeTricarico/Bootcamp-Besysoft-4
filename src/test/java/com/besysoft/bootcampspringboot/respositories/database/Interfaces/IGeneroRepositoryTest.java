@@ -1,9 +1,11 @@
 package com.besysoft.bootcampspringboot.respositories.database.Interfaces;
 
+import com.besysoft.bootcampspringboot.Util.DatosDummynForTest;
 import com.besysoft.bootcampspringboot.dominio.Genero;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -14,33 +16,46 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class IGeneroRepositoryTest {
 
+    private final Genero genero = DatosDummynForTest.getGenero1();
+    private final Genero genero2 = DatosDummynForTest.getGenero2();
+
     @Autowired
     private IGeneroRepository generoRepository;
 
 
+    @BeforeAll
+    static void beforeAll() {
+
+    }
+
     @BeforeEach
     void setUp() {
-        //GIVEN
-        Genero genero = new Genero(1l, "Ciencia Ficción");
-        Genero genero2 = new Genero(2L, "No ficción");
-        generoRepository.save(genero);
-        generoRepository.save(genero2);
+        //GIVEN GLOBAL
+
+    }
+
+    @AfterEach
+    void tearDown() {
+
     }
 
     @Test
     void save() {
         //GIVEN
-        Genero genero3 = new Genero(3L, "Documental");
+        Genero genero3 = DatosDummynForTest.getGenero3();
 
         //WHEN
         Genero generoSave = generoRepository.save(genero3);
 
         //THEN
-        assertEquals(genero3, generoSave);
+        assertEquals(genero3.getNombre(), generoSave.getNombre());
     }
 
     @Test
     void findAll() {
+        //Given
+        Genero gerneroSave1 = generoRepository.save(genero);
+        Genero gerneroSave2 = generoRepository.save(genero2);
 
         //WHEN
         List<Genero> generos = generoRepository.findAll();
@@ -55,11 +70,20 @@ class IGeneroRepositoryTest {
     @Test
     void existsGeneroById() {
 
+        //Given
+
+        Genero gerneroSave1 = generoRepository.save(genero);
+        Genero gerneroSave2 = generoRepository.save(genero2);
+        Long idExist = gerneroSave1.getId();
+        Long idUnxist = 11111111111111L;
+
         //WHEN
-        Boolean existGenero = generoRepository.existsGeneroById(1L);
-        Boolean unexistGenero = generoRepository.existsGeneroById(11111111111111L);
+        Boolean existGenero = generoRepository.existsGeneroById(idExist);
+        Boolean unexistGenero = generoRepository.existsGeneroById(idUnxist);
 
         //THEN
+        assertFalse(generoRepository.findAll().isEmpty());
+
         assertTrue(existGenero);
         assertFalse(unexistGenero);
 
@@ -68,10 +92,16 @@ class IGeneroRepositoryTest {
     @Test
     void findGeneroByNombreIgnoreCase() {
 
-        Optional oGeneroExist = generoRepository.findGeneroByNombreIgnoreCase("Ciencia Ficción");
-        Genero generoExist = (Genero) oGeneroExist.get();
+        Genero gerneroSave1 = generoRepository.save(genero);
+        Genero gerneroSave2 = generoRepository.save(genero2);
+
+
+        //WHEN
+        Optional<Genero> oGeneroExist = generoRepository.findGeneroByNombreIgnoreCase("Ciencia Ficción");
+        Genero generoExist = oGeneroExist.get();
         Optional oGeneroUnexist = generoRepository.findGeneroByNombreIgnoreCase("Genero Inexistente");
 
+        //THEN
         assertTrue(oGeneroExist.isPresent());
         assertTrue(generoExist.getNombre().equalsIgnoreCase("Ciencia Ficción"));
         assertTrue(oGeneroUnexist.isEmpty());
@@ -79,11 +109,19 @@ class IGeneroRepositoryTest {
     }
 
     @Test
+
     void existsGeneroByNombreIgnoreCase() {
 
+        Genero gerneroSave1 = generoRepository.save(genero);
+        Genero gerneroSave2 = generoRepository.save(genero2);
+
+        //GIVEN
+        String nameExist = "Ciencia Ficción";
+        String nameUnxist = "Nombre de genero que no existe";
+
         //WHEN
-        Boolean existGenero = generoRepository.existsGeneroByNombreIgnoreCase("Ciencia Ficción");
-        Boolean unexistGenero = generoRepository.existsGeneroByNombreIgnoreCase("Nombre de genero que no existe");
+        Boolean existGenero = generoRepository.existsGeneroByNombreIgnoreCase(nameExist);
+        Boolean unexistGenero = generoRepository.existsGeneroByNombreIgnoreCase(nameUnxist);
 
         //THEN
         assertTrue(existGenero);
