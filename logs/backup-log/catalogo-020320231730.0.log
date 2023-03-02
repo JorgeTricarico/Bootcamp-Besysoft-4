@@ -1,0 +1,15 @@
+2023-03-02 17:30:15,138 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-02 17:30:15,189 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-03-02 17:30:15,278 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2023-03-02 17:30:44,375 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2023-03-02 17:30:44,441 INFO org.springframework.boot.StartupInfoLogger [main] Starting BootcampSpringBootApplication using Java 11.0.16.1 on DESKTOP-6QN26DG with PID 10212 (C:\Users\Jorge\Desktop\Curso Besysoft\Ejercicio 4\target\classes started by Jorge in C:\Users\Jorge\Desktop\Curso Besysoft\Ejercicio 4)
+2023-03-02 17:30:44,462 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2023-03-02 17:30:50,759 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-02 17:30:51,231 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 384 ms. Found 3 JPA repository interfaces.
+2023-03-02 17:30:56,161 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2023-03-02 17:30:56,217 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2023-03-02 17:30:56,221 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2023-03-02 17:30:56,225 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-02 17:30:57,104 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2023-03-02 17:30:57,107 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 12218 ms
+2023-03-02 17:30:58,498 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...

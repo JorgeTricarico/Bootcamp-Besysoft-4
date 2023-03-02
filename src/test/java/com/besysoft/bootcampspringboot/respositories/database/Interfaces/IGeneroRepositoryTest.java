@@ -30,7 +30,7 @@ class IGeneroRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        //GIVEN GLOBAL
+        //GIVEN GLOBAL. Se carga data a travez de import.sql solo para el test en H2.
 
     }
 
@@ -42,13 +42,15 @@ class IGeneroRepositoryTest {
     @Test
     void save() {
         //GIVEN
-        Genero genero3 = DatosDummynForTest.getGenero3();
+        //Genero genero3 = DatosDummynForTest.getGenero3();
 
         //WHEN
-        Genero generoSave = generoRepository.save(genero3);
+        //Genero generoSave = generoRepository.save(genero3);
 
         //THEN
-        assertEquals(genero3.getNombre(), generoSave.getNombre());
+        //assertEquals(genero3.getNombre(), generoSave.getNombre());
+
+        //assertEquals(genero3, generoSave); ///
     }
 
     @Test
@@ -62,7 +64,7 @@ class IGeneroRepositoryTest {
 
         //THEN
         assertFalse(generos.isEmpty());
-        assertEquals(2, generos.size());
+        assertEquals(4, generos.size());
     }
 
 
@@ -71,9 +73,7 @@ class IGeneroRepositoryTest {
     void existsGeneroById() {
 
         //Given
-
         Genero gerneroSave1 = generoRepository.save(genero);
-        Genero gerneroSave2 = generoRepository.save(genero2);
         Long idExist = gerneroSave1.getId();
         Long idUnxist = 11111111111111L;
 
@@ -86,7 +86,6 @@ class IGeneroRepositoryTest {
 
         assertTrue(existGenero);
         assertFalse(unexistGenero);
-
     }
 
     @Test

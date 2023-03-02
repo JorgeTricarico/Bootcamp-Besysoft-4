@@ -1,12 +1,9 @@
 package com.besysoft.bootcampspringboot.dominio;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +18,4 @@ public class Genero implements Serializable{
     private Long id;
     @Column(length = 30, name = "NOMBRE", nullable = false, unique = true)
     private String nombre;
-
-
 }
