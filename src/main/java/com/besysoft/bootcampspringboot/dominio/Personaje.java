@@ -1,11 +1,19 @@
 package com.besysoft.bootcampspringboot.dominio;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+    @Data
+    @EqualsAndHashCode(exclude = "id")
+    @NoArgsConstructor
+    @AllArgsConstructor
     @Entity
     @Table(name = "personajes")
     public class Personaje implements Serializable {
@@ -31,16 +39,6 @@ import java.util.List;
         @ManyToMany(fetch = FetchType.LAZY, mappedBy = "personajesAsociados")
         private List<PeliculaSerie> peliculasSeries;
 
-        public Personaje() {
-        }
-        public Personaje(Long id, String nombre, Integer edad, Double peso, String historia, List<PeliculaSerie> peliculasSeries) {
-            this.id = id;
-            this.nombre = nombre;
-            this.edad = edad;
-            this.peso = peso;
-            this.historia = historia;
-            this.peliculasSeries = peliculasSeries;
-        }
         public Long getId() {
             return id;
         }

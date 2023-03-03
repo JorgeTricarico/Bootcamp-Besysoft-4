@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
+@EqualsAndHashCode(exclude = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

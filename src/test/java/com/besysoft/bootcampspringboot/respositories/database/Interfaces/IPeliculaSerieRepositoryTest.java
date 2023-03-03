@@ -1,11 +1,8 @@
 package com.besysoft.bootcampspringboot.respositories.database.Interfaces;
 
-import com.besysoft.bootcampspringboot.Util.DatosDummynForTest;
 import com.besysoft.bootcampspringboot.dominio.Genero;
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -14,14 +11,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.besysoft.bootcampspringboot.Util.DatosDummynGenero.getGeneroSinId1;
+import static com.besysoft.bootcampspringboot.Util.DatosDummynPelicula.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class IPeliculaSerieRepositoryTest {
 
-    private final PeliculaSerie pelicula1 = DatosDummynForTest.getPelicula1();
-    private final PeliculaSerie pelicula2 = DatosDummynForTest.getPelicula2();
-    private final PeliculaSerie pelicula3 = DatosDummynForTest.getPelicula3();
+    private final PeliculaSerie pelicula1 = getPeliculaConId1();
+    private final PeliculaSerie pelicula2 = getPeliculaConId2();
+    private final PeliculaSerie pelicula3 = getPeliculaConId3();
 
 
     @Autowired
@@ -34,7 +34,7 @@ class IPeliculaSerieRepositoryTest {
     void setUp() {
 
         //GIVEN GLOBAL
-        Genero genero1 = generoRepository.save(DatosDummynForTest.getGenero1());
+        Genero genero1 = generoRepository.save(getGeneroSinId1());
         pelicula1.setGenero(genero1);
         pelicula2.setGenero(genero1);
         pelicula3.setGenero(genero1);
@@ -48,6 +48,7 @@ class IPeliculaSerieRepositoryTest {
     }
 
     @Test
+    @Order(1)
     void save() {
         //GIVEN
 
@@ -60,16 +61,18 @@ class IPeliculaSerieRepositoryTest {
     }
 
     @Test
+    @Order(2)
     void findAll() {
         //WHEN
         List<PeliculaSerie> peliculas = peliculaRepository.findAll();
 
         //THEN
         assertFalse(peliculas.isEmpty());
-        assertEquals(2, peliculas.size());
+        assertEquals(23, peliculas.size());
     }
 
     @Test
+    @Order(3)
     void findByTituloIgnoreCase() {
         //Given
         String tituloPeliculaExist = pelicula1.getTitulo(); //"Ansestros Perdidos";
@@ -86,12 +89,11 @@ class IPeliculaSerieRepositoryTest {
     }
 
     @Test
+    @Order(4)
     void findAllByFechaDeCreacionBetween() {
         //GIVEN
         LocalDate desde = LocalDate.parse("1998-01-01");
         LocalDate hasta = LocalDate.parse("2000-01-01");
-
-
 
         //WHEN
         List<PeliculaSerie> peliculaPorStream= peliculaRepository.findAll()
@@ -107,9 +109,10 @@ class IPeliculaSerieRepositoryTest {
     }
 
     @Test
+    @Order(5)
     void findAllByCalificacionBetween() {
         //GIVEN
-        Integer desde = 2;
+        Integer desde = 3;
         Integer hasta = 4;
 
         List<PeliculaSerie> peliculasByStream = this.peliculaRepository.findAll()
@@ -122,7 +125,7 @@ class IPeliculaSerieRepositoryTest {
                 .findAllByCalificacionBetween(desde, hasta);
 
         //THEN
-        assertEquals(2, peliculasByQueryMethod.size());
+        assertEquals(peliculasByStream.size(), peliculasByQueryMethod.size());
         assertEquals(peliculasByStream, peliculasByQueryMethod);
     }
 }

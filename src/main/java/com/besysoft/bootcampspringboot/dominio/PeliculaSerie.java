@@ -1,6 +1,9 @@
 package com.besysoft.bootcampspringboot.dominio;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +12,9 @@ import java.util.List;
 
 import static com.besysoft.bootcampspringboot.utilidades.Fechas.formatear;
 
-
+@Data
+@EqualsAndHashCode(exclude = "id")
+@NoArgsConstructor
 @Entity
 @Table(name = "peliculas_series")
 public class PeliculaSerie implements Serializable {
@@ -41,8 +46,6 @@ public class PeliculaSerie implements Serializable {
     )
     private List<Personaje> personajesAsociados;
 
-    public PeliculaSerie() {
-    }
 
     public PeliculaSerie(Long id, String titulo, String fechaDeCreacion, Integer calificacion, Genero genero, List<Personaje> personajesAsociados) {
 
@@ -51,55 +54,6 @@ public class PeliculaSerie implements Serializable {
         this.fechaDeCreacion = formatear(fechaDeCreacion);
         this.calificacion = calificacion;
         this.genero = genero;
-        this.personajesAsociados = personajesAsociados;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public LocalDate getFechaDeCreacion() {
-        return fechaDeCreacion;
-    }
-
-    public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
-        this.fechaDeCreacion = fechaDeCreacion;
-    }
-
-    public Integer getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(Integer calificacion) {
-        this.calificacion = calificacion;
-    }
-
-    public Genero getGenero() {
-        return genero;
-    }
-
-    public void setGenero(Genero genero) {
-        this.genero = genero;
-    }
-
-    public List<Personaje> getPersonajesAsociados() {
-        return personajesAsociados;
-    }
-
-    public void setPersonajesAsociados(List<Personaje> personajesAsociados) {
         this.personajesAsociados = personajesAsociados;
     }
 }

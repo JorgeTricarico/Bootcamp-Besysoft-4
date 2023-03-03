@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,10 +19,17 @@ import java.util.stream.Collectors;
 @Service
 public class GeneroServiceImpl implements IGeneroService {
 
-    @Autowired
-    IGeneroRepository generoRepository;
-    @Autowired
-    IGeneroMapper mapper;
+
+    public GeneroServiceImpl(IGeneroRepository generoRepository, IGeneroMapper mapper) {
+        this.generoRepository = generoRepository;
+        this.mapper = mapper;
+    }
+
+
+    private final IGeneroRepository generoRepository;
+
+    private final IGeneroMapper mapper;
+
     @Override
     @Transactional(readOnly = true)
     public List<GeneroResponseDto> obtenerTodosLosGeneros() {

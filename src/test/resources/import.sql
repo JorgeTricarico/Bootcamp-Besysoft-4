@@ -1,7 +1,7 @@
-INSERT INTO generos(ID,NOMBRE) VALUES (1,'Drama');
-INSERT INTO generos(ID,NOMBRE) VALUES (2,'Aventura');
-INSERT INTO generos(ID,NOMBRE) VALUES (3,'Accion');
-INSERT INTO generos(ID,NOMBRE) VALUES (4,'Terror');
+INSERT INTO generos(NOMBRE) VALUES ('Drama');
+INSERT INTO generos(NOMBRE) VALUES ('Aventura');
+INSERT INTO generos(NOMBRE) VALUES ('Accion');
+INSERT INTO generos(NOMBRE) VALUES ('Terror');
 INSERT INTO personajes(NOMBRE, EDAD, PESO, HISTORIA) VALUES ('Jesica', 28, 70.0, 'Jesica es una chica que vive sola en la casa del pueblo que sus padres le dejaron.');
 INSERT INTO personajes(NOMBRE, EDAD, PESO, HISTORIA) VALUES ('Oracio', 26, 82.4, 'Oracio es un chico timido que es el cartero del pueblo.');
 INSERT INTO personajes(NOMBRE, EDAD, PESO, HISTORIA) VALUES ('Harry Potter', 10, 43.3, 'Harry es un niño hurfano que fue creado por sus tios que lo desprecian por sus habilidades magicas');

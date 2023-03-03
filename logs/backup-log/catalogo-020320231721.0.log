@@ -1,5 +1,0 @@
-2023-03-02 17:21:47,883 INFO org.springframework.boot.StartupInfoLogger [main] Starting BootcampSpringBootApplication using Java 11.0.16.1 on DESKTOP-6QN26DG with PID 10388 (C:\Users\Jorge\Desktop\Curso Besysoft\Ejercicio 4\target\classes started by Jorge in C:\Users\Jorge\Desktop\Curso Besysoft\Ejercicio 4)
-2023-03-02 17:21:47,918 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
-2023-03-02 17:21:47,890 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
-2023-03-02 17:21:53,627 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2023-03-02 17:21:54,041 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 359 ms. Found 3 JPA repository interfaces.
