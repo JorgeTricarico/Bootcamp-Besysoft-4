@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface IGeneroMapper {
 
+
     @Mapping(target = "id", ignore = true)
     Genero mapToEntity(GeneroRequestDto dto);
 

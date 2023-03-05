@@ -3,6 +3,8 @@ package com.besysoft.bootcampspringboot.DTO.Response;
 public class CustomError extends Error {
     //private String additionalField;
 
+
+
     public CustomError(String message) {
         super(message);
 

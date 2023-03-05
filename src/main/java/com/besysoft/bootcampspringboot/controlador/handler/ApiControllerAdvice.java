@@ -5,6 +5,7 @@ import com.besysoft.bootcampspringboot.DTO.Response.ErrorDetail;
 import com.besysoft.bootcampspringboot.DTO.Response.ExceptionDTO;
 import com.besysoft.bootcampspringboot.DTO.Response.ValidExceptionResponse;
 import com.besysoft.bootcampspringboot.Exception.BadRequestExcepion;
+import com.besysoft.bootcampspringboot.Exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -38,32 +40,33 @@ public class ApiControllerAdvice {
         });
 //        LocalDateTime timestamp = LocalDateTime.now();
 //        return new ValidExceptionResponse(timestamp, HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.toString(),obtenerPath() ,"Validaciones", detalle);
-        return new ValidExceptionResponse("validaciones", detalle);
+        return new ValidExceptionResponse(HttpStatus.BAD_REQUEST, obtenerPath(),"validaciones", detalle);
     }
 
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public CustomError handleBadResquestException(BadRequestExcepion ex){
-
-        return new CustomError(ex.getMessage());
+    public ExceptionDTO handleBadResquestException(BadRequestExcepion ex){
+        logPersonalException(ex);
+        return new ExceptionDTO(HttpStatus.BAD_REQUEST,obtenerPath(),ex.getMessage());
     }
 
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public CustomError handleNotFound(BadRequestExcepion ex){
+    public ExceptionDTO handleNotFound(NotFoundException ex){
         logPersonalException(ex);
-        return new CustomError(ex.getMessage());
+        return new ExceptionDTO(HttpStatus.NOT_FOUND,obtenerPath(),ex.getMessage());
     }
 
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public CustomError handleServerInternalErrorException(RuntimeException ex){
+    public ExceptionDTO handleServerInternalErrorException(RuntimeException ex){
         logUnexpected(ex);
-        return new CustomError(ex.getMessage());
+        return new ExceptionDTO(HttpStatus.INTERNAL_SERVER_ERROR,obtenerPath(),ex.getMessage());
     }
+
 
 
     /*public ExceptionDTO manejarExcepcion(Exception ex) {
@@ -88,12 +91,12 @@ public class ApiControllerAdvice {
         return sw.toString();
     }
 
-    /*private String obtenerPath() {
+    private String obtenerPath() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
             return attributes.getRequest().getRequestURI();
         }
         return null;
-    }*/
+    }
 
 }

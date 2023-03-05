@@ -8,6 +8,7 @@ import com.besysoft.bootcampspringboot.DTO.Response.PeliculaSerieResponseDto;
 import com.besysoft.bootcampspringboot.Util.DatosDummynPelicula;
 import com.besysoft.bootcampspringboot.dominio.Genero;
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
+import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IGeneroRepository;
 import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPeliculaSerieRepository;
 import com.besysoft.bootcampspringboot.services.interfaces.IPeliculaSerieService;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +32,9 @@ class PeliculaServicioImplTest {
 
     @MockBean
     private IPeliculaSerieRepository peliculaRepository;
+
+    @MockBean
+    private IGeneroRepository generoRepository;
 
     @Autowired
     private IPeliculaSerieService peliculaService;
@@ -171,35 +175,38 @@ class PeliculaServicioImplTest {
                 pelicula.getTitulo(),
                 pelicula.getFechaDeCreacion().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                 pelicula.getCalificacion(),
-                new GeneroRequestDto(pelicula.getGenero().getNombre()));
+                pelicula.getGenero().getNombre());
 
         PeliculaSerieResponseDto dtoEsperado = mapper.mapToDto(pelicula);
 
         when(peliculaRepository.save(any(PeliculaSerie.class))).thenReturn(pelicula);
+        when(generoRepository.findGeneroByNombreIgnoreCase(anyString())).thenReturn(Optional.of(getGeneroSinId1()));
 
         //WHEN
         PeliculaSerieResponseDto dtoActual = peliculaService.agregarNuevaPelicula(requestDto);
 
         //THEN
-        assertEquals(dtoEsperado.getTitulo(), dtoActual.getTitulo());
+        assertEquals(dtoEsperado, dtoActual);
         verify(peliculaRepository).save(any(PeliculaSerie.class));
     }
 
     @Test
     void actualizarPeliculaPorId() {
-        PeliculaSerie pelicula = DatosDummynPelicula.getPeliculaConId2();
+
+        PeliculaSerie pelicula = getPeliculaConId1();
         Long id = pelicula.getId();
 
         PeliculaSerieRequestDto requestDto = new PeliculaSerieRequestDto(
                 pelicula.getTitulo(),
                 pelicula.getFechaDeCreacion().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                 pelicula.getCalificacion(),
-                new GeneroRequestDto(pelicula.getGenero().getNombre()));
+                (pelicula.getGenero().getNombre()));
 
         PeliculaSerieResponseDto dtoEsperado = mapper.mapToDto(pelicula);
 
         when(peliculaRepository.save(any(PeliculaSerie.class))).thenReturn(pelicula);
         when(peliculaRepository.findById(anyLong())).thenReturn(Optional.of(pelicula));
+        when(generoRepository.findGeneroByNombreIgnoreCase(anyString())).thenReturn(Optional.of(getGeneroSinId1()));
 
         //WHEN
         PeliculaSerieResponseDto dtoActual = peliculaService.actualizarPeliculaPorId(id, requestDto);

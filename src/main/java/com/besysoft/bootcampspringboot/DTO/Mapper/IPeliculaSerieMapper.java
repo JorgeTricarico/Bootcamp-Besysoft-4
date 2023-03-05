@@ -14,14 +14,15 @@ public interface IPeliculaSerieMapper {
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
-//            @Mapping(target = "genero", ignore = true),
+//            @Mapping(target = "genero.nombre", source = "nombreGenero"),
+            @Mapping(target = "genero.nombre", ignore = true),
             @Mapping(target = "personajesAsociados", ignore = true),
             @Mapping(target = "fechaDeCreacion", dateFormat = "dd-MM-yyyy")
     })
     PeliculaSerie mapToEntity(PeliculaSerieRequestDto dto);
 
     @Mappings({
-            @Mapping(target = "nombreGenero", source = "peliculaSerie.genero.nombre"),
+            @Mapping(target = "nombreGenero", source = "genero.nombre"),
             @Mapping(target = "fechaDeCreacion", dateFormat = "dd-MM-yyyy")
     })
     PeliculaSerieResponseDto mapToDto(PeliculaSerie peliculaSerie);

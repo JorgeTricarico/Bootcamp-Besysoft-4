@@ -3,10 +3,13 @@ package com.besysoft.bootcampspringboot.services.database.implementations;
 import com.besysoft.bootcampspringboot.DTO.Mapper.IPeliculaSerieMapper;
 import com.besysoft.bootcampspringboot.DTO.Request.PeliculaSerieRequestDto;
 import com.besysoft.bootcampspringboot.DTO.Response.PeliculaSerieResponseDto;
+import com.besysoft.bootcampspringboot.Exception.GeneroNotFoundException;
 import com.besysoft.bootcampspringboot.Exception.InvalidValueException;
 import com.besysoft.bootcampspringboot.Exception.PeliculaAlreadyExistsException;
 import com.besysoft.bootcampspringboot.Exception.PeliculaNotFoundException;
+import com.besysoft.bootcampspringboot.dominio.Genero;
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
+import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IGeneroRepository;
 import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPeliculaSerieRepository;
 import com.besysoft.bootcampspringboot.services.interfaces.IPeliculaSerieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,8 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
 
     @Autowired
     IPeliculaSerieRepository peliculaRepository;
+    @Autowired
+    IGeneroRepository generoRepository;
     @Autowired
     IPeliculaSerieMapper mapper;
 
@@ -125,11 +130,25 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
             throw new PeliculaAlreadyExistsException("El nombre de la pelicula o serie '" + peliculaRequestDto.getTitulo() + "' ya existe");
         }
         System.out.println(peliculaRequestDto);
-        PeliculaSerie pelicula = mapper.mapToEntity(peliculaRequestDto);
 
-        PeliculaSerie peliculaSave = peliculaRepository.save(pelicula);
-        PeliculaSerieResponseDto peliculaResponseDto = mapper.mapToDto(peliculaSave);
-        return peliculaResponseDto;
+        String nombreDeGenero = peliculaRequestDto.getNombreGenero();
+
+        Optional<Genero> optionalGenero = generoRepository
+                .findGeneroByNombreIgnoreCase(nombreDeGenero);
+
+        if(optionalGenero.isPresent()) {
+
+            PeliculaSerie pelicula = mapper.mapToEntity(peliculaRequestDto);
+            pelicula.setGenero(optionalGenero.get());
+            PeliculaSerie peliculaSave = peliculaRepository.save(pelicula);
+            PeliculaSerieResponseDto peliculaResponseDto = mapper.mapToDto(peliculaSave);
+            return peliculaResponseDto;
+
+        }else {
+            throw new GeneroNotFoundException("El genero '" + nombreDeGenero + "' no existe");
+        }
+
+
     }
 
     @Override
@@ -138,15 +157,25 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
         Optional<PeliculaSerie> optionalPelicula = peliculaRepository.findById(id);
 
         if (optionalPelicula.isPresent()) {
-            PeliculaSerie pelicula = mapper.mapToEntity(peliculaRequestDto);
+            String nombreDeGenero = peliculaRequestDto.getNombreGenero();
 
-            pelicula.setId(id);
-            peliculaRepository.save(pelicula);
+            Optional<Genero> optionalGenero = generoRepository
+                    .findGeneroByNombreIgnoreCase(nombreDeGenero);
 
-            PeliculaSerieResponseDto peliculaResponseDto = mapper.mapToDto(pelicula);
-            return peliculaResponseDto;
+            if(optionalGenero.isPresent()) {
+
+                PeliculaSerie pelicula = mapper.mapToEntity(peliculaRequestDto);
+                pelicula.setGenero(optionalGenero.get());
+                PeliculaSerie peliculaSave = peliculaRepository.save(pelicula);
+                PeliculaSerieResponseDto peliculaResponseDto = mapper.mapToDto(peliculaSave);
+                return peliculaResponseDto;
+
+            }else {
+                throw new GeneroNotFoundException("El genero '" + nombreDeGenero + "' no existe");
+            }
+
         } else {
-            throw new PeliculaNotFoundException("El id ingresado numero '" + id + "'  no existe en la base de datos");
+            throw new PeliculaNotFoundException("El id de pelicula ingresado numero '" + id + "'  no existe en la base de datos");
         }
 
     }

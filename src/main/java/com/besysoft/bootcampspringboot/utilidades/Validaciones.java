@@ -39,7 +39,7 @@ public class Validaciones {
 
     public static void validarCalificacion(Integer calificacion) {
         if (calificacion == null || calificacion > 5 || calificacion < 1) {
-            throw new IllegalArgumentException("La calificacion no puede ser nula y tiene que estar entre 1 y 5");
+            throw new InvalidDataFormatException("La calificacion no puede ser nula y tiene que estar entre 1 y 5");
         }
     }
 
@@ -47,33 +47,33 @@ public class Validaciones {
         validarIsBlank(nombreObjeto, nombre);
         Boolean sonSoloLetrasYNumeros = nombre.matches("^[a-zA-Z0-9 ]+$");
         if (!sonSoloLetrasYNumeros) {
-            throw new IllegalArgumentException("El nombre de " + nombreObjeto + " debe contener solo letras y/o numeros.");
+            throw new InvalidDataFormatException("El nombre de " + nombreObjeto + " debe contener solo letras y/o numeros positivos");
         }
     }
 
     public static void validarLetras(String nombreObjeto, String nombre) {
         Boolean sonSoloLetrasNumeros = nombre.matches("^[a-zA-Z ]+$");
         if (!sonSoloLetrasNumeros) {
-            throw new IllegalArgumentException("El nombre de " + nombreObjeto + " debe contener solo letras.");
+            throw new InvalidDataFormatException("El nombre de " + nombreObjeto + " debe contener solo letras.");
         }
     }
 
     public static void validarNumeros(String numero) {
         Boolean sonSoloNumeros = numero.matches("^[0-9]+$");
         if (!sonSoloNumeros) {
-            throw new IllegalArgumentException("El desde o hasta debe ser un numero del 1 al 5");
+            throw new InvalidDataFormatException("El desde o hasta debe ser un numero del 1 al 5");
         }
     }
 
     public static void validarCalificacionPorRango(Integer desde, Integer hasta) {
         if (desde == null || hasta == null) {
-            throw new IllegalArgumentException("Las calificaciones no pueden ser nulas");
+            throw new InvalidDataFormatException("Las calificaciones no pueden ser nulas");
         }
         if (desde < 1 || desde > 5 || hasta < 1 || hasta > 5) {
-            throw new IllegalArgumentException("Las calificaciones debe ser del 1 al 5");
+            throw new InvalidDataFormatException("Las calificaciones debe ser del 1 al 5");
         }
         if (!(desde <= hasta)) {
-            throw new IllegalArgumentException("Las calificaciones desde y hasta deben ser iguales o en orden ascendente");
+            throw new InvalidDataFormatException("Las calificaciones desde y hasta deben ser iguales o en orden ascendente");
         }
     }
 
@@ -83,10 +83,10 @@ public class Validaciones {
 
     public static void validarFechaDeCreacion(PeliculaSerie pelicula) throws DataFormatException {
         if (pelicula.getFechaDeCreacion() == null) {
-            throw new DataFormatException("La fecha de creacion no puede ser nula o estar vacia.");
+            throw new InvalidDataFormatException("La fecha de creacion no puede ser nula o estar vacia.");
         }
         if (pelicula.getFechaDeCreacion().isAfter(LocalDate.now())) {
-            throw new DataFormatException("La fecha no puede ser del futuro.");
+            throw new InvalidDataFormatException("La fecha no puede ser del futuro.");
         }
     }
 
