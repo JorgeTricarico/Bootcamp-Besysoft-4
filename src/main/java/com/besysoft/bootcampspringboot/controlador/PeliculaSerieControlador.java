@@ -36,102 +36,38 @@ public class PeliculaSerieControlador {
 
     @GetMapping
     public ResponseEntity<?> mostrarTodasLasPeliculas() {
-        try {
             return ok(peliculaService.obtenerTodasLasPeliculas());
-        }catch (NullPointerException e){
-            return notFound(e.getMessage());
-        }catch (RuntimeException e){
-            return internalServerError(e.getMessage());
-        }
     }
 
     @GetMapping("/{tituloOGenero}")
     public ResponseEntity<?> buscarPorTituloOGenero(@PathVariable String tituloOGenero) {
-        try {
             validarTitulo("pelicula, serie o Genero", tituloOGenero);
             List<PeliculaSerieResponseDto> peliculaSeries = peliculaService.buscarPeliculaPorTituloOGenero(tituloOGenero);
             return ok(peliculaSeries);
-        }catch (IllegalArgumentException e){
-            logValidation(e);
-            return badResquest(e.getMessage());
-        }catch (NullPointerException e){
-            logValidation(e);
-            return notFound(e.getMessage());
-        }catch (RuntimeException e){
-            logValidation(e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
     }
 
     @GetMapping("/fechas")
     public ResponseEntity<?> buscarPorFecha(@RequestParam String desde, @RequestParam String hasta) {
-        try {
             validarFecha(desde, hasta);
             return ok(peliculaService.buscarPeliculaPorFecha(desde, hasta));
-        }catch (IllegalArgumentException | DataFormatException e){
-            logValidation(e);
-            return badResquest(e.getMessage());
-        }catch (NullPointerException e){
-            logValidation(e);
-            return notFound(e.getMessage());
-        } catch (RuntimeException e){
-            logValidation(e);
-            return internalServerError(e.getMessage());
-        }
     }
 
     @GetMapping("/calificacion")
     public ResponseEntity<?> buscarPorCalificacion(@RequestParam Integer desde, @RequestParam Integer hasta){
-        try {
             validarCalificacionPorRango(desde, hasta);
             return ok(peliculaService.buscarPeliculasPorCalificacion(desde, hasta));
-        } catch (IllegalArgumentException e) {
-            logValidation(e);
-            return badResquest(e.getMessage());
-        }catch (NullPointerException e) {
-            logValidation(e);
-            return notFound(e.getMessage());
-        }catch (RuntimeException e){
-            logValidation(e);
-            return internalServerError(e.getMessage());
-        }
+
 
     }
 
     @PostMapping
     public ResponseEntity<?> agregarPelicula(@RequestBody @Valid PeliculaSerieRequestDto peliculaRequestDto, BindingResult result){
-        try {
-            if(result.hasErrors()){
                 return errorInValidator(result);
-            }
-            return created(peliculaService.agregarNuevaPelicula(peliculaRequestDto));
-        }catch (IllegalArgumentException e){
-            logValidation(e);
-            return badResquest(e.getMessage());
-        } catch (RuntimeException e){
-            logUnexpected(e);
-            return internalServerError(e.toString());
-        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarPelicula (@PathVariable Long id, @RequestBody @Valid PeliculaSerieRequestDto peliculaRequestDto, BindingResult result){
-        try {
-            if(result.hasErrors()){
                 return errorInValidator(result);
-            }
-            return created(peliculaService.actualizarPeliculaPorId(id, peliculaRequestDto));
-        }catch (NullPointerException e){
-            logValidation(e);
-            return notFound(e.getMessage());
-        }catch (IllegalArgumentException e){
-            logValidation(e);
-            return badResquest(e.getMessage());
-        } catch (RuntimeException e){
-            logUnexpected(e);
-            return internalServerError(e.getMessage());
-        }
     }
 
 

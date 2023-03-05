@@ -3,6 +3,9 @@ package com.besysoft.bootcampspringboot.services.database.implementations;
 import com.besysoft.bootcampspringboot.DTO.Mapper.IPersonajeMapper;
 import com.besysoft.bootcampspringboot.DTO.Request.PersonajeRequestDto;
 import com.besysoft.bootcampspringboot.DTO.Response.PersonajeResponseDto;
+import com.besysoft.bootcampspringboot.Exception.InvalidValueException;
+import com.besysoft.bootcampspringboot.Exception.PersonajeAlreadyExistsException;
+import com.besysoft.bootcampspringboot.Exception.PersonajeNotFoundException;
 import com.besysoft.bootcampspringboot.dominio.Personaje;
 import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPersonajeRepository;
 import com.besysoft.bootcampspringboot.services.interfaces.IPersonajeService;
@@ -31,7 +34,7 @@ public class PersonajeServicioImpl  implements IPersonajeService {
     public List<PersonajeResponseDto> obtenerTodosLosPersonajes() {
             List<Personaje> personajes = personajeRepository.findAll();
             if (personajes.isEmpty()){
-                throw  new NullPointerException("No hay personajes en la base de datos.");
+                throw  new PersonajeNotFoundException("No hay ningun personaje en la base de datos");
             }
 
             List<PersonajeResponseDto> personajeResponseDtos = personajes.stream()
@@ -51,7 +54,7 @@ public class PersonajeServicioImpl  implements IPersonajeService {
         if (edadONombre.matches("^[-+]?\\d+$")) {  //^[-+]?\\d+$    ^[0-9]+$
             Integer datoAInteger = Integer.parseInt(edadONombre);
             if (datoAInteger<0){
-                throw new IllegalArgumentException("La edad no puede ser menor a 0");
+                throw new InvalidValueException("La edad no puede ser menor a 0");
             }
             return buscarPersonajesPorEdad(datoAInteger);
         } else {
@@ -67,7 +70,7 @@ public class PersonajeServicioImpl  implements IPersonajeService {
 
         List<Personaje> personajes = personajeRepository.findByNombreIgnoreCase(nombre);
         if (personajes.isEmpty()) {
-            throw new NullPointerException("El nombre '"+nombre+"' no existe en la base de datos");
+            throw new PersonajeNotFoundException("El nombre '"+nombre+"' no existe en la base de datos");
         }
 
         List<PersonajeResponseDto> personajeResponseDtos = personajes.stream()
@@ -84,7 +87,7 @@ public class PersonajeServicioImpl  implements IPersonajeService {
         List<Personaje> personajes= personajeRepository.findByEdad(edad);
 
         if (personajes.isEmpty()) {
-            throw new NullPointerException("La edad '"+edad+"' no corresponde con ningun personaje");
+            throw new PersonajeNotFoundException("La edad '"+edad+"' no corresponde con ningun personaje");
         }
         List<PersonajeResponseDto> personajeResponseDtos = personajes.stream()
                 .map(personaje -> mapper
@@ -99,7 +102,7 @@ public class PersonajeServicioImpl  implements IPersonajeService {
         List<Personaje> personajes = personajeRepository.findByEdadBetween(desde, hasta);
 
         if (personajes.isEmpty()) {
-            throw new NullPointerException("No se encontraron personajes en el rango de las edades ingresadas");
+            throw new PersonajeNotFoundException("No se encontraron personajes en el rango de las edades ingresadas");
         }
         List<PersonajeResponseDto> personajeResponseDtos = personajes.stream()
                 .map(personaje -> mapper
@@ -115,7 +118,7 @@ public class PersonajeServicioImpl  implements IPersonajeService {
         Optional<Personaje> optionalPersonaje = personajeRepository.findAll().stream().filter(p -> p.getNombre().equalsIgnoreCase(personajeRequestDto.getNombre())).findAny();
 
         if (optionalPersonaje.isPresent()) {
-            throw new IllegalArgumentException("El nombre ingresado del personaje '"+ personajeRequestDto.getNombre()+"' ya existe");
+            throw new PersonajeAlreadyExistsException("El nombre ingresado del personaje '"+ personajeRequestDto.getNombre()+"' ya existe");
         }
         Personaje personaje = mapper.mapToEntity(personajeRequestDto);
         personajeRepository.save(personaje);
@@ -136,7 +139,7 @@ public class PersonajeServicioImpl  implements IPersonajeService {
             PersonajeResponseDto personajeResponseDto = mapper.mapToDto(personaje);
             return personajeResponseDto;
         }else{
-            throw new NullPointerException("El id de personaje ingresado numero '"+id+"'  no existe en la base de datos");
+            throw new PersonajeNotFoundException("El id de personaje ingresado numero '"+id+"'  no existe en la base de datos");
         }
     }
 }

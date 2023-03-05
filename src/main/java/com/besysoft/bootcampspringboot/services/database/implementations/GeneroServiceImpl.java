@@ -3,6 +3,8 @@ package com.besysoft.bootcampspringboot.services.database.implementations;
 import com.besysoft.bootcampspringboot.DTO.Mapper.IGeneroMapper;
 import com.besysoft.bootcampspringboot.DTO.Request.GeneroRequestDto;
 import com.besysoft.bootcampspringboot.DTO.Response.GeneroResponseDto;
+import com.besysoft.bootcampspringboot.Exception.GeneroAlreadyExistsException;
+import com.besysoft.bootcampspringboot.Exception.GeneroNotFoundException;
 import com.besysoft.bootcampspringboot.dominio.Genero;
 import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IGeneroRepository;
 import com.besysoft.bootcampspringboot.services.interfaces.IGeneroService;
@@ -36,7 +38,7 @@ public class GeneroServiceImpl implements IGeneroService {
         try {
             List<Genero> listaDeGeneros = generoRepository.findAll();
             if (listaDeGeneros.isEmpty()){
-                throw new NullPointerException("No existen generos en la base de datos");
+                throw new GeneroNotFoundException("No existe ningun genero en la base de datos");
             }
             List<GeneroResponseDto> listaGeneroDto = listaDeGeneros.stream().map(genero -> mapper.mapToDto(genero)).collect(Collectors.toList());
             return listaGeneroDto;
@@ -52,7 +54,7 @@ public class GeneroServiceImpl implements IGeneroService {
         Boolean existeGenero = generoRepository.existsGeneroByNombreIgnoreCase(generoRequestDto.getNombre());
 
         if (existeGenero) {
-            throw new IllegalArgumentException("El nombre de genero '" + generoRequestDto.getNombre() +"' ya existe.");
+            throw new GeneroAlreadyExistsException("El nombre de genero '" + generoRequestDto.getNombre() +"' ya existe.");
         }
         Genero generoSave = generoRepository.save(mapper.mapToEntity(generoRequestDto));
 
@@ -69,7 +71,7 @@ public class GeneroServiceImpl implements IGeneroService {
 
         if (existeGenero) {
             if (generoRepository.existsGeneroByNombreIgnoreCase(generoRequestDtoAct.getNombre())){
-                throw new IllegalArgumentException("El nombre de genero '"+generoRequestDtoAct.getNombre()+"' ya existe.");
+                throw new GeneroAlreadyExistsException("El nombre de genero '"+generoRequestDtoAct.getNombre()+"' ya existe.");
             }
             Optional<Genero> generoById = generoRepository.findById(id);
             Genero genero  = generoById.orElseThrow();
@@ -81,7 +83,7 @@ public class GeneroServiceImpl implements IGeneroService {
             GeneroResponseDto generoResponseDto = mapper.mapToDto(genero);
             return generoResponseDto;
         }else{
-            throw new NullPointerException("No exise ningun genero en la base de datos.");
+            throw new GeneroNotFoundException("No exise ningun genero en la base de datos.");
         }
     }
 }

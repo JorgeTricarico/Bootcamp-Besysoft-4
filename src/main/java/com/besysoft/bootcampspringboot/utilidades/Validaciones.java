@@ -1,5 +1,6 @@
 package com.besysoft.bootcampspringboot.utilidades;
 
+import com.besysoft.bootcampspringboot.Exception.InvalidDataFormatException;
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
 import com.besysoft.bootcampspringboot.dominio.Personaje;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +77,7 @@ public class Validaciones {
         }
     }
 
-    public static void validarFecha(String desde, String hasta) throws DataFormatException {
+    public static void validarFecha(String desde, String hasta){
         validarFechaPorRango(desde, hasta);
     }
 
@@ -103,9 +104,9 @@ public class Validaciones {
         }
     }
 
-    public static void validarFechaPorRango(String desde, String hasta) throws DataFormatException {
+    public static void validarFechaPorRango(String desde, String hasta) {
         if (desde.compareTo(hasta) > 0) {
-            throw new DataFormatException("Rango de fecha inválido.");
+            throw new InvalidDataFormatException("Rango de fecha inválido.");
         }
     }
 
@@ -137,13 +138,22 @@ public class Validaciones {
         log.info("Se lanzo una validacion personalizada: \n" + mensajeBody);
     }
 
+    public static void logPersonalException(Throwable e){
+        Map<String, Object> mensajeBody = new HashMap<>();
+        mensajeBody.put("Cause ", e.getStackTrace()[0].toString()
+                + "\n" + e.getStackTrace()[1].toString() + "\n");
+        mensajeBody.put("Message ", e.getMessage() + "\n");
+        mensajeBody.put("Exception ", e.getClass().getSimpleName() + "\n");
+        log.info("Se lanzo una excepcion personalizada: \n" + mensajeBody);
+    }
+
     public static void logUnexpected(Throwable e){
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("Cause ", e.getStackTrace()[0].toString()
                 + "\n" + e.getStackTrace()[1].toString() + "\n");
         mensajeBody.put("Message ", e.getMessage() + "\n");
         mensajeBody.put("Exception ", e.getClass().getSimpleName() + "\n");
-        log.info("Se lanzo una excepcion inesperada: \n" + mensajeBody);
+        log.warn("Se lanzo una excepcion inesperada: \n" + mensajeBody);
     }
 
 }

@@ -20,8 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.besysoft.bootcampspringboot.utilidades.Validaciones.logUnexpected;
-import static com.besysoft.bootcampspringboot.utilidades.Validaciones.logValidation;
+import static com.besysoft.bootcampspringboot.utilidades.Validaciones.*;
 
 @Slf4j
 @ControllerAdvice(annotations = RestController.class)
@@ -54,12 +53,13 @@ public class ApiControllerAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public CustomError handleNotFound(BadRequestExcepion ex){
+        logPersonalException(ex);
         return new CustomError(ex.getMessage());
     }
 
     @ExceptionHandler
     @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CustomError handleServerInternalErrorException(RuntimeException ex){
         logUnexpected(ex);
         return new CustomError(ex.getMessage());
