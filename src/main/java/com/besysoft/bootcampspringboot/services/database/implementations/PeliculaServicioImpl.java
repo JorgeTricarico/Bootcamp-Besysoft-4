@@ -3,6 +3,7 @@ package com.besysoft.bootcampspringboot.services.database.implementations;
 import com.besysoft.bootcampspringboot.DTO.Mapper.IPeliculaSerieMapper;
 import com.besysoft.bootcampspringboot.DTO.Request.PeliculaSerieRequestDto;
 import com.besysoft.bootcampspringboot.DTO.Response.PeliculaSerieResponseDto;
+import com.besysoft.bootcampspringboot.Exception.InvalidValueException;
 import com.besysoft.bootcampspringboot.dominio.PeliculaSerie;
 import com.besysoft.bootcampspringboot.respositories.database.Interfaces.IPeliculaSerieRepository;
 import com.besysoft.bootcampspringboot.services.interfaces.IPeliculaSerieService;
@@ -78,7 +79,7 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PeliculaSerieResponseDto> buscarPeliculaPorFecha(String desde, String hasta) {
+    public List<PeliculaSerieResponseDto> buscarPeliculaPorFecha(String desde, String hasta){
         LocalDate fechaInicio = formatear(desde);
         LocalDate fechaFinal = formatear(hasta);
 
@@ -86,7 +87,7 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
                 .findAllByFechaDeCreacionBetween(fechaInicio, fechaFinal);
 
         if (peliculas.isEmpty()) {
-            throw new NullPointerException("No se encontro peliculas con las fechas ingresadas");
+            throw new InvalidValueException("No se encontro peliculas con las fechas ingresadas");
         }
 
         List<PeliculaSerieResponseDto> peliculaSerieResponseDtos = peliculas.stream()
