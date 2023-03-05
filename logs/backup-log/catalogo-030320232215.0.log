@@ -1,0 +1,16 @@
+2023-03-03 22:15:02,454 INFO org.hibernate.tool.schema.internal.exec.AbstractScriptSourceInput [main] HHH000476: Executing import script 'file:/C:/Users/Jorge/Desktop/Curso%20Besysoft/Ejercicio%204/target/test-classes/import.sql'
+2023-03-03 22:15:02,712 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-03-03 22:15:02,947 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-03 22:15:08,912 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-03 22:15:12,681 INFO org.springframework.boot.StartupInfoLogger [main] Started GeneroServiceImplTest in 40.505 seconds (JVM running for 46.775)
+2023-03-03 22:15:13,489 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-03 22:15:13,492 INFO org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [SpringApplicationShutdownHook] HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2023-03-03 22:15:13,505 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] SQL Error: 90121, SQLState: 90121
+2023-03-03 22:15:13,507 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] La base de datos ya esta cerrada (para des-habilitar el cerrado automatico durante el shutdown de la VM, agregue ";DB_CLOSE_ON_EXIT=FALSE" a la URL de conexión)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-214]
+2023-03-03 22:15:13,655 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] SQL Error: 90121, SQLState: 90121
+2023-03-03 22:15:13,711 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] La base de datos ya esta cerrada (para des-habilitar el cerrado automatico durante el shutdown de la VM, agregue ";DB_CLOSE_ON_EXIT=FALSE" a la URL de conexión)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-214]
+2023-03-03 22:15:13,714 WARN org.springframework.beans.factory.support.DisposableBeanAdapter [SpringApplicationShutdownHook] Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.exception.JDBCConnectionException: Unable to release JDBC Connection used for DDL execution
+2023-03-03 22:15:13,736 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-03-03 22:15:13,795 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

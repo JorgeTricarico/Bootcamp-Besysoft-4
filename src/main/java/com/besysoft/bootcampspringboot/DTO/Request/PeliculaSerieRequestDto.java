@@ -1,5 +1,6 @@
 package com.besysoft.bootcampspringboot.DTO.Request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,6 +8,7 @@ import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PeliculaSerieRequestDto {
 
     @NotBlank(message = "El titulo de pelicula o serie no puede ser nulo o estar vacio.")
@@ -27,4 +29,5 @@ public class PeliculaSerieRequestDto {
     @Pattern(regexp = "^[A-Za-z ]+$", message = "El nombre de genero puede contener letras y espacios. Regex: [A-Za-z ]")
     @Size(min = 1, max = 50, message = "El nombre del genero puede tener un de 1 a 50 caracteres.")
     private GeneroRequestDto nombreGenero;
+
 }

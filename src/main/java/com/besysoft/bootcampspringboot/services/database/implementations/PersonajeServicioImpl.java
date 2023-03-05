@@ -48,10 +48,10 @@ public class PersonajeServicioImpl  implements IPersonajeService {
     @Transactional(readOnly = true)
     public List<PersonajeResponseDto> buscarPorEdadONombre(String edadONombre) {
 
-        if (edadONombre.matches("^[0-9]+$")) {
+        if (edadONombre.matches("^[-+]?\\d+$")) {  //^[-+]?\\d+$    ^[0-9]+$
             Integer datoAInteger = Integer.parseInt(edadONombre);
             if (datoAInteger<0){
-                throw new IllegalArgumentException("La edad no puede ser menor a 0.");
+                throw new IllegalArgumentException("La edad no puede ser menor a 0");
             }
             return buscarPersonajesPorEdad(datoAInteger);
         } else {

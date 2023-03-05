@@ -39,42 +39,6 @@ import java.util.List;
         @ManyToMany(fetch = FetchType.LAZY, mappedBy = "personajesAsociados")
         private List<PeliculaSerie> peliculasSeries;
 
-        public Long getId() {
-            return id;
-        }
-        public void setId(Long id) {
-            this.id = id;
-        }
-        public String getNombre() {
-            return nombre;
-        }
-        public void setNombre(String nombre) {
-            this.nombre = nombre;
-        }
-        public Integer getEdad() {
-            return edad;
-        }
-        public void setEdad(Integer edad) {
-            this.edad = edad;
-        }
-        public Double getPeso() {
-            return peso;
-        }
-        public void setPeso(Double peso) {
-            this.peso = peso;
-        }
-        public String getHistoria() {
-            return historia;
-        }
-        public void setHistoria(String historia) {
-            this.historia = historia;
-        }
-        public List<PeliculaSerie> getPeliculasSeries() {
-            return peliculasSeries;
-        }
-        public void setPeliculasSeries(List<PeliculaSerie> peliculasSeries) {
-            this.peliculasSeries = peliculasSeries;
-        }
     }
 
 

@@ -10,8 +10,8 @@ import java.util.List;
 public interface IGeneroService {
 
     List<GeneroResponseDto> obtenerTodosLosGeneros();
-    GeneroRequestDto agregarNuevoGenero(GeneroRequestDto generoRequestDto);
-    GeneroRequestDto actualizarGeneroPorId(Long id, GeneroRequestDto generoRequestDto);
+    GeneroResponseDto agregarNuevoGenero(GeneroRequestDto generoRequestDto);
+    GeneroResponseDto actualizarGeneroPorId(Long id, GeneroRequestDto generoRequestDto);
 
 
 }

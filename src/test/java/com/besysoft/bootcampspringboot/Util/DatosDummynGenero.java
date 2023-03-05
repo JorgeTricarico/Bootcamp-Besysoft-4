@@ -22,15 +22,19 @@ public class DatosDummynGenero {
 
 
     public static  final Genero getGeneroSinId1(){
-        return new Genero(null, "Ciencia Ficción");
+        return new Genero(null, "Ciencia Ficcion");
     }
 
     public static final Genero getGeneroSinId2(){
-        return new Genero(null, "No ficción");
+        return new Genero(null, "No ficcion");
     }
 
     public static final Genero getGeneroSinId3(){
         return new Genero(null, "Documental");
+    }
+
+    public static final Genero getGeneroConId(){
+        return new Genero(1L, "Policial");
     }
 
 

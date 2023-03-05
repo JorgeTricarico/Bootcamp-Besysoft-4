@@ -27,7 +27,7 @@ public class GeneroServiceImpl implements IGeneroService {
     IGeneroMapper mapper;
 
     @Override
-    public GeneroRequestDto agregarNuevoGenero(GeneroRequestDto generoRequestDto) {
+    public GeneroResponseDto agregarNuevoGenero(GeneroRequestDto generoRequestDto) {
         Optional<Genero> optinalGenero = generoRepository.obtenerTodosLosGeneros()
                 .stream()
                 .filter(p -> p.getNombre().equalsIgnoreCase(generoRequestDto.getNombre())).findAny();
@@ -38,9 +38,11 @@ public class GeneroServiceImpl implements IGeneroService {
 
         Long cantidadDeGeneros = Long.valueOf(generoRepository.obtenerTodosLosGeneros().size());
 
-        generoRepository.agregarNuevoGenero(mapper.mapToEntity(generoRequestDto));
+        Genero genero = mapper.mapToEntity(generoRequestDto);
+        generoRepository.agregarNuevoGenero(genero);
+        GeneroResponseDto generoResponseDto = mapper.mapToDto(genero);
 
-        return generoRequestDto;
+        return generoResponseDto;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class GeneroServiceImpl implements IGeneroService {
     }
 
     @Override
-    public GeneroRequestDto actualizarGeneroPorId(Long id, GeneroRequestDto generoRequestDtoAct) {
+    public GeneroResponseDto actualizarGeneroPorId(Long id, GeneroRequestDto generoRequestDtoAct) {
         Optional<Genero> optionalGenero = generoRepository.buscarGeneroPorId(id);
 
         if (optionalGenero.isPresent()) {
@@ -70,8 +72,10 @@ public class GeneroServiceImpl implements IGeneroService {
 
             genero.setNombre(generoRequestDtoAct.getNombre());
             /*genero.setPeliculaSerie(generoAct.getPeliculaSerie());*/
+            GeneroResponseDto generoResponseDto = mapper.mapToDto(genero);
 
-            return generoRequestDtoAct;
+
+            return generoResponseDto;
         }else{
             throw new IllegalArgumentException("El id ingresado no existe");
         }

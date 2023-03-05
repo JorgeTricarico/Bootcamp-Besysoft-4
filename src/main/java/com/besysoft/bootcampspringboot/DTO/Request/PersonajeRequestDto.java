@@ -1,5 +1,6 @@
 package com.besysoft.bootcampspringboot.DTO.Request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PersonajeRequestDto {
 
     @NotBlank(message = "El nombre del personaje no puede ser nulo ni estar vacio.")

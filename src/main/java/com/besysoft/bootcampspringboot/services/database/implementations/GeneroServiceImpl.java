@@ -47,21 +47,23 @@ public class GeneroServiceImpl implements IGeneroService {
     }
 
     @Transactional(readOnly = false)
-    public GeneroRequestDto agregarNuevoGenero(GeneroRequestDto generoRequestDto) {
+    public GeneroResponseDto agregarNuevoGenero(GeneroRequestDto generoRequestDto) {
 
         Boolean existeGenero = generoRepository.existsGeneroByNombreIgnoreCase(generoRequestDto.getNombre());
 
         if (existeGenero) {
             throw new IllegalArgumentException("El nombre de genero '" + generoRequestDto.getNombre() +"' ya existe.");
         }
-        generoRepository.save(mapper.mapToEntity(generoRequestDto));
+        Genero generoSave = generoRepository.save(mapper.mapToEntity(generoRequestDto));
 
-        return generoRequestDto;//new ResponseEntity<>(genero, HttpStatus.CREATED);
+        GeneroResponseDto generoResponseDto = mapper.mapToDto(generoSave);
+
+        return generoResponseDto;//new ResponseEntity<>(genero, HttpStatus.CREATED);
     }
 
     @Override
     @Transactional(readOnly = false)
-    public GeneroRequestDto actualizarGeneroPorId(Long id, GeneroRequestDto generoRequestDtoAct) {
+    public GeneroResponseDto actualizarGeneroPorId(Long id, GeneroRequestDto generoRequestDtoAct) {
 
         Boolean existeGenero = generoRepository.existsGeneroById(id);
 
@@ -70,12 +72,14 @@ public class GeneroServiceImpl implements IGeneroService {
                 throw new IllegalArgumentException("El nombre de genero '"+generoRequestDtoAct.getNombre()+"' ya existe.");
             }
             Optional<Genero> generoById = generoRepository.findById(id);
-            Genero genero  = generoById.get();
+            Genero genero  = generoById.orElseThrow();
             genero.setNombre(generoRequestDtoAct.getNombre());
             if (genero.getId() != null){
                 genero.setId(genero.getId());
             }
-            return generoRequestDtoAct;
+
+            GeneroResponseDto generoResponseDto = mapper.mapToDto(genero);
+            return generoResponseDto;
         }else{
             throw new NullPointerException("No exise ningun genero en la base de datos.");
         }

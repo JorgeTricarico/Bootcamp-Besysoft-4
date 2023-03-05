@@ -81,11 +81,11 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
     }
 
     @Override
-    public List<PeliculaSerieResponseDto> buscarPeliculaPorFecha(String desde, String hasta) throws DataFormatException {
+    public List<PeliculaSerieResponseDto> buscarPeliculaPorFecha(String desde, String hasta) {
         LocalDate fechaInicio = formatear(desde);
         LocalDate fechaFinal = formatear(hasta);
         if (desde.compareTo(hasta) > 0) {
-            throw new DataFormatException("Rango de fecha inválido.");
+            throw new IllegalArgumentException("Rango de fecha inválido.");
         }
         List<PeliculaSerie> peliculas = peliculaSerieRepository.buscarComoRepoPeliculaPorFecha(fechaInicio,fechaFinal);
 
@@ -125,7 +125,7 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
     }
 
     @Override
-    public PeliculaSerieResponseDto agregarNuevaPelicula(PeliculaSerieRequestDto peliculaSerieRequestDto) throws DataFormatException {
+    public PeliculaSerieResponseDto agregarNuevaPelicula(PeliculaSerieRequestDto peliculaSerieRequestDto) {
 
         Optional<PeliculaSerie> optionalPelicula = peliculaSerieRepository.obtenerTodasLasPeliculas()
                 .stream().filter(p -> p.getTitulo().equalsIgnoreCase(peliculaSerieRequestDto.getTitulo()))
@@ -146,7 +146,7 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
     }
 
     @Override
-    public PeliculaSerieResponseDto actualizarPeliculaPorId(Long id, PeliculaSerieRequestDto peliculaSerieRequestDto) throws DataFormatException {
+    public PeliculaSerieResponseDto actualizarPeliculaPorId(Long id, PeliculaSerieRequestDto peliculaSerieRequestDto) {
         Optional<PeliculaSerie> optionalPelicula = peliculaSerieRepository.buscarPeliculaPorId(id);
 
         if(optionalPelicula.isPresent()){

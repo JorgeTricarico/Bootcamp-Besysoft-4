@@ -10,7 +10,7 @@ import org.mapstruct.Mappings;
 
 import javax.validation.constraints.Min;
 
-@Mapper(componentModel = "spring", uses = {IPeliculaTitleMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "spring", uses = {IPeliculaTitleMapper.class}/*, injectionStrategy = InjectionStrategy.CONSTRUCTOR*/)
 public interface IPersonajeMapper {
 
     @Mappings({

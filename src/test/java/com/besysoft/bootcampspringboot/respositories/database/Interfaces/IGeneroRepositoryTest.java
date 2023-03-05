@@ -7,8 +7,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 import java.util.Optional;
-import static com.besysoft.bootcampspringboot.Util.DatosDummynGenero.*;
 
+import static com.besysoft.bootcampspringboot.Util.DatosDummynGenero.*;
 import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

@@ -10,9 +10,9 @@ public interface IPeliculaSerieService {
 
     List<PeliculaSerieResponseDto> obtenerTodasLasPeliculas();
     List<PeliculaSerieResponseDto> buscarPeliculaPorTituloOGenero(String tituloOGenero);
-    List<PeliculaSerieResponseDto> buscarPeliculaPorFecha(String desde, String hasta) throws DataFormatException;
+    List<PeliculaSerieResponseDto> buscarPeliculaPorFecha(String desde, String hasta);
     List<PeliculaSerieResponseDto> buscarPeliculasPorCalificacion(Integer desde, Integer hasta);
-    PeliculaSerieResponseDto agregarNuevaPelicula(PeliculaSerieRequestDto peliculaRequestDto) throws DataFormatException;
-    PeliculaSerieResponseDto actualizarPeliculaPorId(Long id, PeliculaSerieRequestDto peliculaRequestDto) throws DataFormatException;
+    PeliculaSerieResponseDto agregarNuevaPelicula(PeliculaSerieRequestDto peliculaRequestDto);
+    PeliculaSerieResponseDto actualizarPeliculaPorId(Long id, PeliculaSerieRequestDto peliculaRequestDto);
 
 }

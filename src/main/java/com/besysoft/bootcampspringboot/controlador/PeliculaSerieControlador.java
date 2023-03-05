@@ -106,7 +106,7 @@ public class PeliculaSerieControlador {
                 return errorInValidator(result);
             }
             return created(peliculaService.agregarNuevaPelicula(peliculaRequestDto));
-        }catch (IllegalArgumentException | DataFormatException e){
+        }catch (IllegalArgumentException e){
             logValidation(e);
             return badResquest(e.getMessage());
         } catch (RuntimeException e){
@@ -125,7 +125,7 @@ public class PeliculaSerieControlador {
         }catch (NullPointerException e){
             logValidation(e);
             return notFound(e.getMessage());
-        }catch (IllegalArgumentException | DataFormatException e){
+        }catch (IllegalArgumentException e){
             logValidation(e);
             return badResquest(e.getMessage());
         } catch (RuntimeException e){

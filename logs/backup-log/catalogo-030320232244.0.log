@@ -1,0 +1,13 @@
+2023-03-03 22:44:02,013 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-03 22:44:05,183 INFO org.springframework.boot.StartupInfoLogger [main] Started GeneroServiceImplTest in 29.734 seconds (JVM running for 36.06)
+2023-03-03 22:44:05,752 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-03 22:44:05,755 INFO org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [SpringApplicationShutdownHook] HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2023-03-03 22:44:05,771 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] SQL Error: 90121, SQLState: 90121
+2023-03-03 22:44:05,773 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] La base de datos ya esta cerrada (para des-habilitar el cerrado automatico durante el shutdown de la VM, agregue ";DB_CLOSE_ON_EXIT=FALSE" a la URL de conexión)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-214]
+2023-03-03 22:44:05,778 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] SQL Error: 90121, SQLState: 90121
+2023-03-03 22:44:05,780 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] La base de datos ya esta cerrada (para des-habilitar el cerrado automatico durante el shutdown de la VM, agregue ";DB_CLOSE_ON_EXIT=FALSE" a la URL de conexión)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-214]
+2023-03-03 22:44:05,783 WARN org.springframework.beans.factory.support.DisposableBeanAdapter [SpringApplicationShutdownHook] Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.exception.JDBCConnectionException: Unable to release JDBC Connection used for DDL execution
+2023-03-03 22:44:05,787 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-03-03 22:44:05,802 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

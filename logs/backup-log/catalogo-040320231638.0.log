@@ -1,0 +1,12 @@
+2023-03-04 16:38:04,644 INFO org.springframework.boot.StartupInfoLogger [main] Started PersonajeServicioImplTest in 40.166 seconds (JVM running for 52.186)
+2023-03-04 16:38:08,418 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-04 16:38:08,439 INFO org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [SpringApplicationShutdownHook] HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2023-03-04 16:38:08,532 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] SQL Error: 90121, SQLState: 90121
+2023-03-04 16:38:08,589 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] La base de datos ya esta cerrada (para des-habilitar el cerrado automatico durante el shutdown de la VM, agregue ";DB_CLOSE_ON_EXIT=FALSE" a la URL de conexión)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-214]
+2023-03-04 16:38:08,617 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] SQL Error: 90121, SQLState: 90121
+2023-03-04 16:38:08,619 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SpringApplicationShutdownHook] La base de datos ya esta cerrada (para des-habilitar el cerrado automatico durante el shutdown de la VM, agregue ";DB_CLOSE_ON_EXIT=FALSE" a la URL de conexión)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-214]
+2023-03-04 16:38:08,621 WARN org.springframework.beans.factory.support.DisposableBeanAdapter [SpringApplicationShutdownHook] Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.exception.JDBCConnectionException: Unable to release JDBC Connection used for DDL execution
+2023-03-04 16:38:08,633 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-03-04 16:38:08,687 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

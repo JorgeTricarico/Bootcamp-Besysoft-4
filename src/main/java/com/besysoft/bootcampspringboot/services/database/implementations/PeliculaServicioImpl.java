@@ -121,9 +121,11 @@ public class PeliculaServicioImpl implements IPeliculaSerieService {
         if (optionalPelicula.isPresent()) {
             throw new IllegalArgumentException("El nombre de la pelicula o serie '" + peliculaRequestDto.getTitulo() + "' ya existe");
         }
+        System.out.println(peliculaRequestDto);
         PeliculaSerie pelicula = mapper.mapToEntity(peliculaRequestDto);
-        peliculaRepository.save(pelicula);
-        PeliculaSerieResponseDto peliculaResponseDto = mapper.mapToDto(pelicula);
+
+        PeliculaSerie peliculaSave = peliculaRepository.save(pelicula);
+        PeliculaSerieResponseDto peliculaResponseDto = mapper.mapToDto(peliculaSave);
         return peliculaResponseDto;
     }
 
